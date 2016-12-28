@@ -1,5 +1,6 @@
 package pe.yt.com.piazzoli.kevin.michattimereal;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -12,6 +13,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class ChatActivity extends AppCompatActivity {
@@ -24,6 +26,9 @@ public class ChatActivity extends AppCompatActivity {
     private RequestQueue mRequest;
 
     private static String IP = "http://kevinandroidkap.pe.hu/ArchivosPHP/Login_GETID.php?id=";
+
+    private String USER = "";
+    private String PASSWORD = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +52,8 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     public void VerificarLogin(String user, String password){
-        Toast.makeText(this,"El usuario es: "+user+" y la contraseña es: "+password,Toast.LENGTH_SHORT).show();
+        USER = user;
+        PASSWORD = password;
         SolicitudJSON(IP+user);
     }
 
@@ -55,7 +61,7 @@ public class ChatActivity extends AppCompatActivity {
         JsonObjectRequest solicitud = new JsonObjectRequest(URL,null, new Response.Listener<JSONObject>(){
             @Override
             public void onResponse(JSONObject datos) {
-                VerficiarLogin(datos);
+                VerificarPassword(datos);
             }
         },new Response.ErrorListener(){
             @Override
@@ -66,8 +72,23 @@ public class ChatActivity extends AppCompatActivity {
         VolleyRP.addToQueue(solicitud,mRequest,this,volley);
     }
 
-    public void VerficiarLogin(JSONObject datos){
-        //Controlar el json
+    public void VerificarPassword(JSONObject datos){
+        try {
+            String estado = datos.getString("resultado");
+            if(estado.equals("CC")){
+                JSONObject Jsondatos = new JSONObject(datos.getString("datos"));
+                String usuario = Jsondatos.getString("id");
+                String contraseña = Jsondatos.getString("Password");
+                if(usuario.equals(USER) && contraseña.equals(PASSWORD)){
+                    Toast.makeText(this,"Usted se ah logeado correctamente",Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(this,NuevaActividad.class);
+                    startActivity(i);
+                }
+                else Toast.makeText(this,"La contraseña es incorrecta",Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(this,estado,Toast.LENGTH_SHORT).show();
+            }
+        } catch (JSONException e) {}
     }
 
 }
