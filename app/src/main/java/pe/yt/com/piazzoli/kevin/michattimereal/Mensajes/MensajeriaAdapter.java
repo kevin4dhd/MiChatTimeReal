@@ -1,5 +1,8 @@
 package pe.yt.com.piazzoli.kevin.michattimereal.Mensajes;
 
+import android.content.Context;
+import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -22,9 +25,11 @@ import pe.yt.com.piazzoli.kevin.michattimereal.R;
 public class MensajeriaAdapter extends RecyclerView.Adapter<MensajeriaAdapter.MensajesViewHolder> {
 
     private List<MensajeDeTexto> mensajeDeTextos;
+    private Context context;
 
-    public MensajeriaAdapter(List<MensajeDeTexto> mensajeDeTextos) {
+    public MensajeriaAdapter(List<MensajeDeTexto> mensajeDeTextos,Context context) {
         this.mensajeDeTextos = mensajeDeTextos;
+        this.context = context;
     }
 
     @Override
@@ -67,6 +72,11 @@ public class MensajeriaAdapter extends RecyclerView.Adapter<MensajeriaAdapter.Me
 
         holder.TvMensaje.setText(mensajeDeTextos.get(position).getMensaje());
         holder.TvHora.setText(mensajeDeTextos.get(position).getHoraDelMensaje());
+        if(android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) holder.cardView.getBackground().setAlpha(0);
+        else holder.cardView.setBackgroundColor(ContextCompat.getColor(context,android.R.color.transparent));
+
+
+
     }
 
     @Override

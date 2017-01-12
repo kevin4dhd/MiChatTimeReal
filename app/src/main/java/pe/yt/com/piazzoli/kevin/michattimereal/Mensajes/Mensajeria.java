@@ -5,9 +5,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Scroller;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +30,7 @@ public class Mensajeria extends AppCompatActivity {
     private EditText eTEscribirMensaje;
     private List<MensajeDeTexto> mensajeDeTextos;
     private MensajeriaAdapter adapter;
+    private int TEXT_LINES = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,27 +46,46 @@ public class Mensajeria extends AppCompatActivity {
         LinearLayoutManager lm = new LinearLayoutManager(this);
         rv.setLayoutManager(lm);
 
-        for(int i=0;i<10;i++){
+        for (int i = 0; i < 10; i++) {
             MensajeDeTexto mensajeDeTextoAuxiliar = new MensajeDeTexto();
-            mensajeDeTextoAuxiliar.setId(""+i);
-            mensajeDeTextoAuxiliar.setMensaje("emisor asdaskdjask djklasjd asjkldasdasdasd asdas"+i);
+            mensajeDeTextoAuxiliar.setId("" + i);
+            mensajeDeTextoAuxiliar.setMensaje("El emisor numero" + i + "Te ha enviado un mensaje");
             mensajeDeTextoAuxiliar.setTipoMensaje(1);
-            mensajeDeTextoAuxiliar.setHoraDelMensaje("10:2"+i);
+            mensajeDeTextoAuxiliar.setHoraDelMensaje("10:2" + i);
             mensajeDeTextos.add(mensajeDeTextoAuxiliar);
         }
 
-        for(int i=0;i<10;i++){
+        for (int i = 0; i < 10; i++) {
             MensajeDeTexto mensajeDeTextoAuxiliar = new MensajeDeTexto();
-            mensajeDeTextoAuxiliar.setId(""+i);
-            mensajeDeTextoAuxiliar.setMensaje("receptor asdaskdjask djklasjd asjkldasdasdasd asdas"+i);
+            mensajeDeTextoAuxiliar.setId("" + i);
+            mensajeDeTextoAuxiliar.setMensaje("El receptor numero "+i+"Te ha enviado un mensaje");
             mensajeDeTextoAuxiliar.setTipoMensaje(2);
-            mensajeDeTextoAuxiliar.setHoraDelMensaje("10:2"+i);
+            mensajeDeTextoAuxiliar.setHoraDelMensaje("10:2" + i);
             mensajeDeTextos.add(mensajeDeTextoAuxiliar);
         }
 
-        adapter = new MensajeriaAdapter(mensajeDeTextos);
+        adapter = new MensajeriaAdapter(mensajeDeTextos,this);
         rv.setAdapter(adapter);
 
+        eTEscribirMensaje.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(eTEscribirMensaje.getLayout().getLineCount()!=TEXT_LINES){
+                    setScrollbarChat();
+                    TEXT_LINES = eTEscribirMensaje.getLayout().getLineCount();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
 
         bTEnviarMensaje.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,9 +97,11 @@ public class Mensajeria extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               finish();
+                finish();
             }
         });
+
+        setScrollbarChat();
 
     }
 
@@ -88,6 +114,17 @@ public class Mensajeria extends AppCompatActivity {
         mensajeDeTextos.add(mensajeDeTextoAuxiliar);
         adapter.notifyDataSetChanged();
         eTEscribirMensaje.setText("");
+        setScrollbarChat();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        setScrollbarChat();
+    }
+
+    public void setScrollbarChat(){
+        rv.scrollToPosition(adapter.getItemCount()-1);
     }
 
 }
