@@ -10,21 +10,22 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <EditText
+            android:id="@+id/eTEsribirMensaje"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Escribe un mensaje..."
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:id="@+id/editText" />
-
+            android:layout_toLeftOf="@+id/bTenviarMensaje"
+            android:layout_toStartOf="@+id/bTenviarMensaje" />
         <Button
+            android:id="@+id/bTenviarMensaje"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:id="@+id/button"
             android:hint="Enviar"/>
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
@@ -47,7 +48,7 @@
             android:layout_below="@+id/appBarLayout"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_above="@+id/editText">
+            android:layout_above="@+id/eTEsribirMensaje">
         </android.support.v7.widget.RecyclerView>
     </RelativeLayout>
 </LinearLayout>
