@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "620920204286",
+    "firebase_url": "https://mi-chat-real-time.firebaseio.com",
+    "project_id": "mi-chat-real-time",
+    "storage_bucket": "mi-chat-real-time.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:620920204286:android:393c46a18716293f",
+        "android_client_info": {
+          "package_name": "pe.yt.com.piazzoli.kevin.michattimereal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "620920204286-1j1gk4lsh17n52eroire0lsumljo0tma.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJYaWJ2If2f-KBrDApM7u5MDdW8yWiT-I"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
