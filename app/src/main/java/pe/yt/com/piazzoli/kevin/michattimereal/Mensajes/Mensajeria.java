@@ -30,7 +30,6 @@ public class Mensajeria extends AppCompatActivity {
     private EditText eTEscribirMensaje;
     private List<MensajeDeTexto> mensajeDeTextos;
     private MensajeriaAdapter adapter;
-    private int TEXT_LINES = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +43,7 @@ public class Mensajeria extends AppCompatActivity {
 
         rv = (RecyclerView) findViewById(R.id.rvMensajes);
         LinearLayoutManager lm = new LinearLayoutManager(this);
+        lm.setStackFromEnd(true);
         rv.setLayoutManager(lm);
 
         for (int i = 0; i < 10; i++) {
@@ -66,26 +66,6 @@ public class Mensajeria extends AppCompatActivity {
 
         adapter = new MensajeriaAdapter(mensajeDeTextos,this);
         rv.setAdapter(adapter);
-
-        eTEscribirMensaje.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(eTEscribirMensaje.getLayout().getLineCount()!=TEXT_LINES){
-                    setScrollbarChat();
-                    TEXT_LINES = eTEscribirMensaje.getLayout().getLineCount();
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
 
         bTEnviarMensaje.setOnClickListener(new View.OnClickListener() {
             @Override
