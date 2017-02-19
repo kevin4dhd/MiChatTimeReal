@@ -13,10 +13,14 @@ import android.widget.EditText;
 import android.widget.Scroller;
 import android.widget.Toast;
 
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.FirebaseInstanceIdService;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import pe.yt.com.piazzoli.kevin.michattimereal.R;
+import pe.yt.com.piazzoli.kevin.michattimereal.Services.FireBaseId;
 
 /**
  * Created by Yomaira on 03/01/2017.
@@ -70,7 +74,14 @@ public class Mensajeria extends AppCompatActivity {
         bTEnviarMensaje.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CreateMensaje(eTEscribirMensaje.getText().toString());
+                String mensaje = eTEscribirMensaje.getText().toString();
+                String TOKEN = FirebaseInstanceId.getInstance().getToken();
+                if(!mensaje.isEmpty()){
+                    CreateMensaje(mensaje);
+                }
+                if(TOKEN!=null){
+                    Toast.makeText(Mensajeria.this, TOKEN , Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

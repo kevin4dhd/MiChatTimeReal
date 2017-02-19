@@ -12,5 +12,7 @@ public class FireBaseServiceMensajes extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
+        String datos = remoteMessage.getData().get("Objetos");
     }
+
 }
