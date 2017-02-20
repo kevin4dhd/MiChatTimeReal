@@ -1,6 +1,11 @@
 package pe.yt.com.piazzoli.kevin.michattimereal.Mensajes;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,6 +33,9 @@ import pe.yt.com.piazzoli.kevin.michattimereal.Services.FireBaseId;
 
 public class Mensajeria extends AppCompatActivity {
 
+    public static final String MENSAJE = "MENSAJE";
+
+    private BroadcastReceiver bR;
 
     private RecyclerView rv;
     private Button bTEnviarMensaje;
@@ -77,7 +85,7 @@ public class Mensajeria extends AppCompatActivity {
                 String mensaje = eTEscribirMensaje.getText().toString();
                 String TOKEN = FirebaseInstanceId.getInstance().getToken();
                 if(!mensaje.isEmpty()){
-                    CreateMensaje(mensaje);
+                    CreateMensaje(mensaje,1);
                 }
                 if(TOKEN!=null){
                     Toast.makeText(Mensajeria.this, TOKEN , Toast.LENGTH_SHORT).show();
@@ -94,13 +102,22 @@ public class Mensajeria extends AppCompatActivity {
 
         setScrollbarChat();
 
+        bR = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String datos = intent.getStringExtra("key_objetos");
+                Toast.makeText(Mensajeria.this,datos, Toast.LENGTH_SHORT).show();
+                CreateMensaje(datos,2);
+            }
+        };
+
     }
 
-    public void CreateMensaje(String mensaje){
+    public void CreateMensaje(String mensaje,int tipoDeMensaje){
         MensajeDeTexto mensajeDeTextoAuxiliar = new MensajeDeTexto();
         mensajeDeTextoAuxiliar.setId("0");
         mensajeDeTextoAuxiliar.setMensaje(mensaje);
-        mensajeDeTextoAuxiliar.setTipoMensaje(1);
+        mensajeDeTextoAuxiliar.setTipoMensaje(tipoDeMensaje);
         mensajeDeTextoAuxiliar.setHoraDelMensaje("10:20");
         mensajeDeTextos.add(mensajeDeTextoAuxiliar);
         adapter.notifyDataSetChanged();
@@ -111,7 +128,13 @@ public class Mensajeria extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        setScrollbarChat();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(bR);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LocalBroadcastManager.getInstance(this).registerReceiver(bR,new IntentFilter(MENSAJE));
     }
 
     public void setScrollbarChat(){
