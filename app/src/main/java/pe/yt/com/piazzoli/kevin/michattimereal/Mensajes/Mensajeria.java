@@ -58,24 +58,6 @@ public class Mensajeria extends AppCompatActivity {
         lm.setStackFromEnd(true);
         rv.setLayoutManager(lm);
 
-        for (int i = 0; i < 10; i++) {
-            MensajeDeTexto mensajeDeTextoAuxiliar = new MensajeDeTexto();
-            mensajeDeTextoAuxiliar.setId("" + i);
-            mensajeDeTextoAuxiliar.setMensaje("El emisor numero" + i + "Te ha enviado un mensaje");
-            mensajeDeTextoAuxiliar.setTipoMensaje(1);
-            mensajeDeTextoAuxiliar.setHoraDelMensaje("10:2" + i);
-            mensajeDeTextos.add(mensajeDeTextoAuxiliar);
-        }
-
-        for (int i = 0; i < 10; i++) {
-            MensajeDeTexto mensajeDeTextoAuxiliar = new MensajeDeTexto();
-            mensajeDeTextoAuxiliar.setId("" + i);
-            mensajeDeTextoAuxiliar.setMensaje("El receptor numero "+i+"Te ha enviado un mensaje");
-            mensajeDeTextoAuxiliar.setTipoMensaje(2);
-            mensajeDeTextoAuxiliar.setHoraDelMensaje("10:2" + i);
-            mensajeDeTextos.add(mensajeDeTextoAuxiliar);
-        }
-
         adapter = new MensajeriaAdapter(mensajeDeTextos,this);
         rv.setAdapter(adapter);
 
@@ -85,7 +67,8 @@ public class Mensajeria extends AppCompatActivity {
                 String mensaje = eTEscribirMensaje.getText().toString();
                 String TOKEN = FirebaseInstanceId.getInstance().getToken();
                 if(!mensaje.isEmpty()){
-                    CreateMensaje(mensaje,1);
+                    CreateMensaje(mensaje,"00:00",1);
+                    eTEscribirMensaje.setText("");
                 }
                 if(TOKEN!=null){
                     Toast.makeText(Mensajeria.this, TOKEN , Toast.LENGTH_SHORT).show();
@@ -105,23 +88,22 @@ public class Mensajeria extends AppCompatActivity {
         bR = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                String datos = intent.getStringExtra("key_objetos");
-                Toast.makeText(Mensajeria.this,datos, Toast.LENGTH_SHORT).show();
-                CreateMensaje(datos,2);
+                String mensaje = intent.getStringExtra("key_mensaje");
+                String hora = intent.getStringExtra("key_hora");
+                CreateMensaje(mensaje,hora,2);
             }
         };
 
     }
 
-    public void CreateMensaje(String mensaje,int tipoDeMensaje){
+    public void CreateMensaje(String mensaje,String hora,int tipoDeMensaje){
         MensajeDeTexto mensajeDeTextoAuxiliar = new MensajeDeTexto();
         mensajeDeTextoAuxiliar.setId("0");
         mensajeDeTextoAuxiliar.setMensaje(mensaje);
         mensajeDeTextoAuxiliar.setTipoMensaje(tipoDeMensaje);
-        mensajeDeTextoAuxiliar.setHoraDelMensaje("10:20");
+        mensajeDeTextoAuxiliar.setHoraDelMensaje(hora);
         mensajeDeTextos.add(mensajeDeTextoAuxiliar);
         adapter.notifyDataSetChanged();
-        eTEscribirMensaje.setText("");
         setScrollbarChat();
     }
 

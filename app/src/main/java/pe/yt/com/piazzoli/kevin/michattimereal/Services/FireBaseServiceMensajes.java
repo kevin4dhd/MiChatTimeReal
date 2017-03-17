@@ -27,14 +27,16 @@ public class FireBaseServiceMensajes extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
-        String datos = remoteMessage.getData().get("Objetos");
-        Mensaje(datos);
+        String mensaje = remoteMessage.getData().get("mensaje");
+        String hora = remoteMessage.getData().get("hora");
+        Mensaje(mensaje,hora);
         showNotification();
     }
 
-    private void Mensaje(String objetos){
+    private void Mensaje(String mensaje,String hora){
         Intent i = new Intent(Mensajeria.MENSAJE);
-        i.putExtra("key_objetos",objetos);
+        i.putExtra("key_mensaje",mensaje);
+        i.putExtra("key_hora",hora);
         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(i);
     }
 
