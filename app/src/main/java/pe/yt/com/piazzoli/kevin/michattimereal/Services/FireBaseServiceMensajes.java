@@ -29,8 +29,10 @@ public class FireBaseServiceMensajes extends FirebaseMessagingService {
         super.onMessageReceived(remoteMessage);
         String mensaje = remoteMessage.getData().get("mensaje");
         String hora = remoteMessage.getData().get("hora");
+        String cabezera =  remoteMessage.getData().get("cabezera");
+        String cuerpo =  remoteMessage.getData().get("cuerpo");
         Mensaje(mensaje,hora);
-        showNotification();
+        showNotification(cabezera,cuerpo);
     }
 
     private void Mensaje(String mensaje,String hora){
@@ -40,7 +42,7 @@ public class FireBaseServiceMensajes extends FirebaseMessagingService {
         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(i);
     }
 
-    private void showNotification(){
+    private void showNotification(String cabezera, String cuerpo){
         Intent i = new Intent(this,Mensajeria.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,0,i,PendingIntent.FLAG_ONE_SHOT);
 
@@ -48,11 +50,11 @@ public class FireBaseServiceMensajes extends FirebaseMessagingService {
 
         Builder builder = new Builder(this);
         builder.setAutoCancel(true);
-        builder.setContentTitle("Kevin Piazzoli DESDE ANDROID");
-        builder.setContentText("Este es el cuerpo");
+        builder.setContentTitle(cabezera);
+        builder.setContentText(cuerpo);
         builder.setSound(soundNotification);
         builder.setSmallIcon(R.drawable.ic_action_key);
-        builder.setTicker("Este es un ticker");
+        builder.setTicker(cuerpo);
         builder.setContentIntent(pendingIntent);
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);

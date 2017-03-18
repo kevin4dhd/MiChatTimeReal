@@ -18,14 +18,25 @@ import android.widget.EditText;
 import android.widget.Scroller;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import pe.yt.com.piazzoli.kevin.michattimereal.Login;
 import pe.yt.com.piazzoli.kevin.michattimereal.R;
 import pe.yt.com.piazzoli.kevin.michattimereal.Services.FireBaseId;
+import pe.yt.com.piazzoli.kevin.michattimereal.VolleyRP;
 
 /**
  * Created by Yomaira on 03/01/2017.
@@ -40,8 +51,18 @@ public class Mensajeria extends AppCompatActivity {
     private RecyclerView rv;
     private Button bTEnviarMensaje;
     private EditText eTEscribirMensaje;
+    private EditText eTRECEPTOR;
     private List<MensajeDeTexto> mensajeDeTextos;
     private MensajeriaAdapter adapter;
+
+    private String MENSAJE_ENVIAR = "";
+    private String EMISOR = "";
+    private String RECEPTOR;
+
+    private static final String IP_MENSAJE = "http://kevinandroidkap.pe.hu/ArchivosPHP/Enviar_Mensajes.php";
+
+    private VolleyRP volley;
+    private RequestQueue mRequest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +70,18 @@ public class Mensajeria extends AppCompatActivity {
         setContentView(R.layout.mensajeria);
         mensajeDeTextos = new ArrayList<>();
 
+        Intent extras = getIntent();
+        Bundle bundle = extras.getExtras();
+        if(bundle!=null){
+            EMISOR = bundle.getString("key_emisor");
+        }
+        volley = VolleyRP.getInstance(this);
+        mRequest = volley.getRequestQueue();
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         bTEnviarMensaje = (Button) findViewById(R.id.bTenviarMensaje);
         eTEscribirMensaje = (EditText) findViewById(R.id.eTEsribirMensaje);
+        eTRECEPTOR = (EditText) findViewById(R.id.receptorET);
 
         rv = (RecyclerView) findViewById(R.id.rvMensajes);
         LinearLayoutManager lm = new LinearLayoutManager(this);
@@ -65,13 +95,12 @@ public class Mensajeria extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String mensaje = eTEscribirMensaje.getText().toString();
-                String TOKEN = FirebaseInstanceId.getInstance().getToken();
-                if(!mensaje.isEmpty()){
+                RECEPTOR = eTRECEPTOR.getText().toString();
+                if(!mensaje.isEmpty() && !RECEPTOR.isEmpty()){
+                    MENSAJE_ENVIAR = mensaje;
+                    MandarMensaje();
                     CreateMensaje(mensaje,"00:00",1);
                     eTEscribirMensaje.setText("");
-                }
-                if(TOKEN!=null){
-                    Toast.makeText(Mensajeria.this, TOKEN , Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -94,6 +123,28 @@ public class Mensajeria extends AppCompatActivity {
             }
         };
 
+    }
+
+    private void MandarMensaje(){
+        HashMap<String,String> hashMapToken = new HashMap<>();
+        hashMapToken.put("emisor",EMISOR);
+        hashMapToken.put("receptor",RECEPTOR);
+        hashMapToken.put("mensaje",MENSAJE_ENVIAR);
+
+        JsonObjectRequest solicitud = new JsonObjectRequest(Request.Method.POST,IP_MENSAJE,new JSONObject(hashMapToken), new Response.Listener<JSONObject>(){
+            @Override
+            public void onResponse(JSONObject datos) {
+                try {
+                    Toast.makeText(Mensajeria.this,datos.getString("resultado"),Toast.LENGTH_SHORT).show();
+                } catch (JSONException e){}
+            }
+        },new Response.ErrorListener(){
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(Mensajeria.this,"Ocurrio un error",Toast.LENGTH_SHORT).show();
+            }
+        });
+        VolleyRP.addToQueue(solicitud,mRequest,this,volley);
     }
 
     public void CreateMensaje(String mensaje,String hora,int tipoDeMensaje){
