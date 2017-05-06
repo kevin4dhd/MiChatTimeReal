@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_chat"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="pe.yt.com.piazzoli.kevin.michattimereal.Login"
+    android:background="#2ed3e2">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Kevin Piazzoli Chat"
+            android:textColor="@color/colorWhite"
+            android:textSize="26sp"
+            android:layout_gravity="center"
+            android:id="@+id/textView"
+            android:textStyle="bold"/>
+
+        <EditText
+            android:id="@+id/eTusuario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Usuario"
+            android:textColorHint="@color/colorWhite"
+            android:textColor="@color/colorWhite"
+            android:drawableLeft="@drawable/ic_action_user" />
+        <EditText
+            android:id="@+id/eTcontraseña"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Contraseña"
+            android:textColorHint="@color/colorWhite"
+            android:drawableLeft="@drawable/ic_action_lock_closed"
+            android:textColor="@color/colorWhite"
+            android:inputType="textPassword"/>
+        <Button
+            android:id="@+id/bTingresar"
+            android:theme="@style/BotonColores"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:hint="Ingresar"
+            android:textColorHint="@color/colorWhite"
+            android:drawableLeft="@drawable/ic_action_key"
+            />
+    </LinearLayout>
+    <Button
+        android:id="@+id/registrar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:hint="No tengo una cuenta"
+        android:background="@android:color/transparent"
+        />
+</RelativeLayout>

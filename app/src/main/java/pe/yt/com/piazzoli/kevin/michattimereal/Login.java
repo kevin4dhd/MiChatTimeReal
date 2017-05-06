@@ -1,8 +1,6 @@
 package pe.yt.com.piazzoli.kevin.michattimereal;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -29,6 +27,7 @@ public class Login extends AppCompatActivity {
     private EditText eTusuario;
     private EditText eTcontraseña;
     private Button bTingresar;
+    private Button registro;
 
     private VolleyRP volley;
     private RequestQueue mRequest;
@@ -42,7 +41,7 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat);
+        setContentView(R.layout.activity_login);
 
         volley = VolleyRP.getInstance(this);
         mRequest = volley.getRequestQueue();
@@ -51,11 +50,20 @@ public class Login extends AppCompatActivity {
         eTcontraseña = (EditText) findViewById(R.id.eTcontraseña);
 
         bTingresar = (Button) findViewById(R.id.bTingresar);
+        registro = (Button) findViewById(R.id.registrar);
 
         bTingresar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 VerificarLogin(eTusuario.getText().toString().toLowerCase(),eTcontraseña.getText().toString().toLowerCase());
+            }
+        });
+
+        registro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(Login.this,Registro.class);
+                startActivity(i);
             }
         });
     }
