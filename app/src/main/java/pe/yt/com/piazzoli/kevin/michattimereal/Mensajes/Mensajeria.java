@@ -94,7 +94,7 @@ public class Mensajeria extends AppCompatActivity {
         bTEnviarMensaje.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String mensaje = eTEscribirMensaje.getText().toString();
+                String mensaje = validarCadena(eTEscribirMensaje.getText().toString());
                 RECEPTOR = eTRECEPTOR.getText().toString();
                 if(!mensaje.isEmpty() && !RECEPTOR.isEmpty()){
                     MENSAJE_ENVIAR = mensaje;
@@ -123,6 +123,14 @@ public class Mensajeria extends AppCompatActivity {
             }
         };
 
+    }
+
+    //"   " NO ENVIAR
+    //"  hola"=>"hola"
+    //"      hola como estas" =>"hola como estas"
+    private String validarCadena(String cadena){
+        for(int i=0;i<cadena.length();i++) if(!(""+cadena.charAt(i)).equalsIgnoreCase(" ")) return cadena.substring(i,cadena.length());
+        return "";
     }
 
     private void MandarMensaje(){

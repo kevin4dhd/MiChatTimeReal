@@ -1,6 +1,8 @@
 package pe.yt.com.piazzoli.kevin.michattimereal;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -89,9 +91,13 @@ public class Login extends AppCompatActivity {
                 if(usuario.equals(USER) && contraseña.equals(PASSWORD)){
                     String Token =FirebaseInstanceId.getInstance().getToken();
                     if(Token!=null){
-                        JSONObject js = new JSONObject(Token);//SOLO SI LES APARECE {"token":"...."}
-                        String tokenRecortado = js.getString("token");
-                        SubirToken(tokenRecortado);
+                        if((""+Token.charAt(0)).equalsIgnoreCase("{")) {
+                            JSONObject js = new JSONObject(Token);//SOLO SI LES APARECE {"token":"...."} o "asdasdas"
+                            String tokenRecortado = js.getString("token");
+                            SubirToken(tokenRecortado);
+                        }else{
+                            SubirToken(Token);
+                        }
                     }
                     else Toast.makeText(this,"El token es nulo",Toast.LENGTH_SHORT).show();
                 }
@@ -99,7 +105,9 @@ public class Login extends AppCompatActivity {
             }else{
                 Toast.makeText(this,estado,Toast.LENGTH_SHORT).show();
             }
-        } catch (JSONException e) {}
+        } catch (JSONException e) {
+            Toast.makeText(this, "El token no se pudo recortar", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void SubirToken(String token){
