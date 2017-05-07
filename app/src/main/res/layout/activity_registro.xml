@@ -26,7 +26,8 @@
         android:layout_height="wrap_content"
         android:hint="Contraseña"
         android:textColorHint="@color/colorWhite"
-        android:textColor="@color/colorWhite"/>
+        android:textColor="@color/colorWhite"
+        android:inputType="textPassword"/>
     <EditText
         android:id="@+id/nombreRegistro"
         android:layout_width="match_parent"
@@ -83,6 +84,36 @@
         android:hint="Correo Electronico"
         android:textColorHint="@color/colorWhite"
         android:textColor="@color/colorWhite"/>
+    <EditText
+        android:id="@+id/telefonoRegistro"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Telefono"
+        android:textColorHint="@color/colorWhite"
+        android:textColor="@color/colorWhite"
+        android:inputType="number"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+        <RadioButton
+            android:checked="true"
+            android:id="@+id/RDhombre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Hombre"
+            android:paddingLeft="25sp"
+            android:paddingRight="25sp"
+            />
+        <RadioButton
+            android:id="@+id/RDmujer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Mujer"
+            android:paddingLeft="25sp"
+            android:paddingRight="25sp"
+            />
+    </LinearLayout>
     <Button
         android:id="@+id/buttonRegistro"
         android:layout_width="wrap_content"
