@@ -95,51 +95,64 @@ public class Registro extends AppCompatActivity {
                 else if (rdMujer.isChecked()) genero = "mujer";
 
                 registrarWebService(
-                        getStringET(user),
-                        getStringET(password),
-                        getStringET(nombre),
-                        getStringET(apellidos),
-                        getStringET(dia) + "/" + getStringET(mes) + "/" + getStringET(año),
-                        getStringET(correo),
-                        getStringET(telefono),
+                        getStringET(user).trim(),
+                        getStringET(password).trim(),
+                        getStringET(nombre).trim(),
+                        getStringET(apellidos).trim(),
+                        getStringET(dia) + "/" + getStringET(mes) + "/" + getStringET(año).trim(),
+                        getStringET(correo).trim(),
+                        getStringET(telefono).trim(),
                         genero);
             }
         });
     }
 
     private void registrarWebService(String usuario,String contraseña,String nombre,String apellido,String fechaNacimiento,String correo,String numero, String genero){
-        HashMap<String,String> hashMapToken = new HashMap<>();
-        hashMapToken.put("id",usuario);
-        hashMapToken.put("nombre",nombre);
-        hashMapToken.put("apellidos",apellido);
-        hashMapToken.put("fecha_nacimiento",fechaNacimiento);
-        hashMapToken.put("correo",correo);
-        hashMapToken.put("genero",genero);
-        hashMapToken.put("telefono",numero);
-        hashMapToken.put("password",contraseña);
 
-        JsonObjectRequest solicitud = new JsonObjectRequest(Request.Method.POST,IP_REGISTRAR,new JSONObject(hashMapToken), new Response.Listener<JSONObject>(){
-            @Override
-            public void onResponse(JSONObject datos) {
-                try {
-                    String estado = datos.getString("resultado");
-                    if(estado.equalsIgnoreCase("El usuario se registro correctamente")){
-                        Toast.makeText(Registro.this,estado, Toast.LENGTH_SHORT).show();
-                        finish();
-                    }else{
-                        Toast.makeText(Registro.this,estado, Toast.LENGTH_SHORT).show();
+        if(!usuario.isEmpty() &&
+                !contraseña.isEmpty() &&
+                !nombre.isEmpty() &&
+                !apellido.isEmpty() &&
+                !fechaNacimiento.isEmpty() &&
+                !correo.isEmpty() &&
+                !numero.isEmpty()
+                ) {
+
+            HashMap<String, String> hashMapToken = new HashMap<>();
+            hashMapToken.put("id", usuario);
+            hashMapToken.put("nombre", nombre);
+            hashMapToken.put("apellidos", apellido);
+            hashMapToken.put("fecha_nacimiento", fechaNacimiento);
+            hashMapToken.put("correo", correo);
+            hashMapToken.put("genero", genero);
+            hashMapToken.put("telefono", numero);
+            hashMapToken.put("password", contraseña);
+
+            JsonObjectRequest solicitud = new JsonObjectRequest(Request.Method.POST, IP_REGISTRAR, new JSONObject(hashMapToken), new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject datos) {
+                    try {
+                        String estado = datos.getString("resultado");
+                        if (estado.equalsIgnoreCase("El usuario se registro correctamente")) {
+                            Toast.makeText(Registro.this, estado, Toast.LENGTH_SHORT).show();
+                            finish();
+                        } else {
+                            Toast.makeText(Registro.this, estado, Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (JSONException e) {
+                        Toast.makeText(Registro.this, "No se pudo registrar", Toast.LENGTH_SHORT).show();
                     }
-                } catch (JSONException e) {
-                    Toast.makeText(Registro.this,"No se pudo registrar",Toast.LENGTH_SHORT).show();
                 }
-            }
-        },new Response.ErrorListener(){
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(Registro.this,"No se pudo registrar",Toast.LENGTH_SHORT).show();
-            }
-        });
-        VolleyRP.addToQueue(solicitud,mRequest,this,volley);
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(Registro.this, "No se pudo registrar", Toast.LENGTH_SHORT).show();
+                }
+            });
+            VolleyRP.addToQueue(solicitud, mRequest, this, volley);
+        }else{
+            Toast.makeText(this, "Por favor llene todo los campos", Toast.LENGTH_SHORT).show();
+        }
     }
 
 

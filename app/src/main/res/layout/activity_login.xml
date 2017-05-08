@@ -46,6 +46,11 @@
             android:drawableLeft="@drawable/ic_action_lock_closed"
             android:textColor="@color/colorWhite"
             android:inputType="textPassword"/>
+        <RadioButton
+            android:id="@+id/RBSecion"
+            android:hint="No Cerrar Sesión"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
         <Button
             android:id="@+id/bTingresar"
             android:theme="@style/BotonColores"

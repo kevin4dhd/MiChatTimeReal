@@ -34,7 +34,9 @@ import java.util.HashMap;
 import java.util.List;
 
 import pe.yt.com.piazzoli.kevin.michattimereal.Login;
+import pe.yt.com.piazzoli.kevin.michattimereal.Preferences;
 import pe.yt.com.piazzoli.kevin.michattimereal.R;
+import pe.yt.com.piazzoli.kevin.michattimereal.Registro;
 import pe.yt.com.piazzoli.kevin.michattimereal.Services.FireBaseId;
 import pe.yt.com.piazzoli.kevin.michattimereal.VolleyRP;
 
@@ -55,6 +57,8 @@ public class Mensajeria extends AppCompatActivity {
     private List<MensajeDeTexto> mensajeDeTextos;
     private MensajeriaAdapter adapter;
 
+    private Button cerrarSesion;
+
     private String MENSAJE_ENVIAR = "";
     private String EMISOR = "";
     private String RECEPTOR;
@@ -70,11 +74,10 @@ public class Mensajeria extends AppCompatActivity {
         setContentView(R.layout.mensajeria);
         mensajeDeTextos = new ArrayList<>();
 
-        Intent extras = getIntent();
-        Bundle bundle = extras.getExtras();
-        if(bundle!=null){
-            EMISOR = bundle.getString("key_emisor");
-        }
+        EMISOR = Preferences.obtenerPreferenceString(this,Preferences.PREFERENCE_USUARIO_LOGIN);
+
+        Toast.makeText(this, EMISOR, Toast.LENGTH_SHORT).show();
+
         volley = VolleyRP.getInstance(this);
         mRequest = volley.getRequestQueue();
 
@@ -82,6 +85,18 @@ public class Mensajeria extends AppCompatActivity {
         bTEnviarMensaje = (Button) findViewById(R.id.bTenviarMensaje);
         eTEscribirMensaje = (EditText) findViewById(R.id.eTEsribirMensaje);
         eTRECEPTOR = (EditText) findViewById(R.id.receptorET);
+
+        cerrarSesion = (Button) findViewById(R.id.cerrarSesion);
+
+        cerrarSesion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Preferences.savePreferenceBoolean(Mensajeria.this,false,Preferences.PREFERENCE_ESTADO_BUTTON_SESION);
+                Intent i = new Intent(Mensajeria.this,Login.class);
+                startActivity(i);
+                finish();
+            }
+        });
 
         rv = (RecyclerView) findViewById(R.id.rvMensajes);
         LinearLayoutManager lm = new LinearLayoutManager(this);

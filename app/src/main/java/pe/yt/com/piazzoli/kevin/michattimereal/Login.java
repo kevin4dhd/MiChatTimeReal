@@ -1,11 +1,14 @@
 package pe.yt.com.piazzoli.kevin.michattimereal;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -29,6 +32,8 @@ public class Login extends AppCompatActivity {
     private Button bTingresar;
     private Button registro;
 
+    private RadioButton RBsesion;
+
     private VolleyRP volley;
     private RequestQueue mRequest;
 
@@ -38,10 +43,18 @@ public class Login extends AppCompatActivity {
     private String USER = "";
     private String PASSWORD = "";
 
+    private boolean isActivateRadioButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        if(Preferences.obtenerPreferenceBoolean(this,Preferences.PREFERENCE_ESTADO_BUTTON_SESION)){
+            Intent i = new Intent(Login.this,Mensajeria.class);
+            startActivity(i);
+            finish();
+        }
 
         volley = VolleyRP.getInstance(this);
         mRequest = volley.getRequestQueue();
@@ -51,6 +64,21 @@ public class Login extends AppCompatActivity {
 
         bTingresar = (Button) findViewById(R.id.bTingresar);
         registro = (Button) findViewById(R.id.registrar);
+
+        RBsesion = (RadioButton) findViewById(R.id.RBSecion);
+
+        isActivateRadioButton = RBsesion.isChecked(); //DESACTIVADO
+
+        RBsesion.setOnClickListener(new View.OnClickListener() {
+            //ACTIVADO
+            @Override
+            public void onClick(View v) {
+                if(isActivateRadioButton){
+                    RBsesion.setChecked(false);
+                }
+                isActivateRadioButton = RBsesion.isChecked();
+            }
+        });
 
         bTingresar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,12 +154,14 @@ public class Login extends AppCompatActivity {
         JsonObjectRequest solicitud = new JsonObjectRequest(Request.Method.POST,IP_TOKEN,new JSONObject(hashMapToken), new Response.Listener<JSONObject>(){
             @Override
             public void onResponse(JSONObject datos) {
+                Preferences.savePreferenceBoolean(Login.this,RBsesion.isChecked(),Preferences.PREFERENCE_ESTADO_BUTTON_SESION);
+                Preferences.savePreferendceString(Login.this,USER,Preferences.PREFERENCE_USUARIO_LOGIN);
                 try {
                     Toast.makeText(Login.this,datos.getString("resultado"),Toast.LENGTH_SHORT).show();
                 } catch (JSONException e){}
                 Intent i = new Intent(Login.this,Mensajeria.class);
-                i.putExtra("key_emisor",USER);
                 startActivity(i);
+                finish();
             }
         },new Response.ErrorListener(){
             @Override
