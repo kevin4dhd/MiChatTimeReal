@@ -19,7 +19,7 @@ public class Preferences {
         preferences.edit().putBoolean(key,b).apply();
     }
 
-    public static void savePreferendceString(Context c, String b,String key){
+    public static void savePreferenceString(Context c, String b, String key){
         SharedPreferences preferences = c.getSharedPreferences(STRING_PREFERENCES,c.MODE_PRIVATE);
         preferences.edit().putString(key,b).apply();
     }

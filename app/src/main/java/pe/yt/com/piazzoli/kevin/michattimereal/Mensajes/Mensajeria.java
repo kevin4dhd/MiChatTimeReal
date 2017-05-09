@@ -100,7 +100,7 @@ public class Mensajeria extends AppCompatActivity {
 
         rv = (RecyclerView) findViewById(R.id.rvMensajes);
         LinearLayoutManager lm = new LinearLayoutManager(this);
-        lm.setStackFromEnd(true);
+        lm.setStackFromEnd(true);//Mensajeria
         rv.setLayoutManager(lm);
 
         adapter = new MensajeriaAdapter(mensajeDeTextos,this);

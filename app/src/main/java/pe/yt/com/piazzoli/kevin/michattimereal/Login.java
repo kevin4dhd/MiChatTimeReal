@@ -1,8 +1,6 @@
 package pe.yt.com.piazzoli.kevin.michattimereal;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -23,7 +21,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
-import pe.yt.com.piazzoli.kevin.michattimereal.Mensajes.Mensajeria;
+import pe.yt.com.piazzoli.kevin.michattimereal.Amigos.ActivityAmigos;
 
 public class Login extends AppCompatActivity {
 
@@ -51,9 +49,7 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         if(Preferences.obtenerPreferenceBoolean(this,Preferences.PREFERENCE_ESTADO_BUTTON_SESION)){
-            Intent i = new Intent(Login.this,Mensajeria.class);
-            startActivity(i);
-            finish();
+            iniciarActividadSiguiente();
         }
 
         volley = VolleyRP.getInstance(this);
@@ -155,13 +151,11 @@ public class Login extends AppCompatActivity {
             @Override
             public void onResponse(JSONObject datos) {
                 Preferences.savePreferenceBoolean(Login.this,RBsesion.isChecked(),Preferences.PREFERENCE_ESTADO_BUTTON_SESION);
-                Preferences.savePreferendceString(Login.this,USER,Preferences.PREFERENCE_USUARIO_LOGIN);
+                Preferences.savePreferenceString(Login.this,USER,Preferences.PREFERENCE_USUARIO_LOGIN);
                 try {
                     Toast.makeText(Login.this,datos.getString("resultado"),Toast.LENGTH_SHORT).show();
                 } catch (JSONException e){}
-                Intent i = new Intent(Login.this,Mensajeria.class);
-                startActivity(i);
-                finish();
+                iniciarActividadSiguiente();
             }
         },new Response.ErrorListener(){
             @Override
@@ -170,6 +164,12 @@ public class Login extends AppCompatActivity {
             }
         });
         VolleyRP.addToQueue(solicitud,mRequest,this,volley);
+    }
+
+    public void iniciarActividadSiguiente(){
+        Intent i = new Intent(Login.this,ActivityAmigos.class);
+        startActivity(i);
+        finish();
     }
 
 }

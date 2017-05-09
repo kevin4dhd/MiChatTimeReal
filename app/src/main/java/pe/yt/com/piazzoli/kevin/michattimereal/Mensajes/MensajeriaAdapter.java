@@ -74,9 +74,6 @@ public class MensajeriaAdapter extends RecyclerView.Adapter<MensajeriaAdapter.Me
         holder.TvHora.setText(mensajeDeTextos.get(position).getHoraDelMensaje());
         if(android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) holder.cardView.getBackground().setAlpha(0);
         else holder.cardView.setBackgroundColor(ContextCompat.getColor(context,android.R.color.transparent));
-
-
-
     }
 
     @Override
