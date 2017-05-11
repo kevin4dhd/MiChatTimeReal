@@ -38,11 +38,6 @@
                 android:layout_height="wrap_content"
                 app:navigationIcon="?attr/homeAsUpIndicator"
                 >
-                <Button
-                    android:id="@+id/cerrarSesion"
-                    android:hint="Cerrar Sesión"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
                 <EditText
                     android:id="@+id/receptorET"
                     android:layout_width="match_parent"

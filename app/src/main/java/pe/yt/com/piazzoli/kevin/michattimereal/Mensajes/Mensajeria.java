@@ -57,8 +57,6 @@ public class Mensajeria extends AppCompatActivity {
     private List<MensajeDeTexto> mensajeDeTextos;
     private MensajeriaAdapter adapter;
 
-    private Button cerrarSesion;
-
     private String MENSAJE_ENVIAR = "";
     private String EMISOR = "";
     private String RECEPTOR;
@@ -85,18 +83,6 @@ public class Mensajeria extends AppCompatActivity {
         bTEnviarMensaje = (Button) findViewById(R.id.bTenviarMensaje);
         eTEscribirMensaje = (EditText) findViewById(R.id.eTEsribirMensaje);
         eTRECEPTOR = (EditText) findViewById(R.id.receptorET);
-
-        cerrarSesion = (Button) findViewById(R.id.cerrarSesion);
-
-        cerrarSesion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Preferences.savePreferenceBoolean(Mensajeria.this,false,Preferences.PREFERENCE_ESTADO_BUTTON_SESION);
-                Intent i = new Intent(Mensajeria.this,Login.class);
-                startActivity(i);
-                finish();
-            }
-        });
 
         rv = (RecyclerView) findViewById(R.id.rvMensajes);
         LinearLayoutManager lm = new LinearLayoutManager(this);
