@@ -16,6 +16,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import java.util.Random;
 
 import pe.yt.com.piazzoli.kevin.michattimereal.Mensajes.Mensajeria;
+import pe.yt.com.piazzoli.kevin.michattimereal.Preferences;
 import pe.yt.com.piazzoli.kevin.michattimereal.R;
 
 /**
@@ -31,18 +32,23 @@ public class FireBaseServiceMensajes extends FirebaseMessagingService {
         String hora = remoteMessage.getData().get("hora");
         String cabezera =  remoteMessage.getData().get("cabezera");
         String cuerpo =  remoteMessage.getData().get("cuerpo");
-        Mensaje(mensaje,hora);
-        showNotification(cabezera,cuerpo);
+        String receptor = remoteMessage.getData().get("receptor");
+        Mensaje(mensaje,hora,receptor);
+        String emisor = Preferences.obtenerPreferenceString(this,Preferences.PREFERENCE_USUARIO_LOGIN);
+        if(emisor.equals(receptor)){
+            showNotification(cabezera,cuerpo);
+        }
     }
 
     public boolean equals(Object obj) {
         return (getApplication().getClass() == obj);
     }
 
-    private void Mensaje(String mensaje,String hora){
+    private void Mensaje(String mensaje,String hora,String receptor){
         Intent i = new Intent(Mensajeria.MENSAJE);
         i.putExtra("key_mensaje",mensaje);
         i.putExtra("key_hora",hora);
+        i.putExtra("key_receptor",receptor);
         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(i);
     }
 

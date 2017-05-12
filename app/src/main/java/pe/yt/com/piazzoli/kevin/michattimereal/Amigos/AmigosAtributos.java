@@ -9,6 +9,7 @@ public class AmigosAtributos {
     private String nombre;
     private String ultimoMensaje;
     private String hora;
+    private String id;
 
     public AmigosAtributos(){
 
@@ -44,5 +45,13 @@ public class AmigosAtributos {
 
     public void setHora(String hora) {
         this.hora = hora;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

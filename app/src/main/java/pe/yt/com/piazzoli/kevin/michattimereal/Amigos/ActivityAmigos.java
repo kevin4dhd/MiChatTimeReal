@@ -84,12 +84,13 @@ public class ActivityAmigos extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void agregarAmigo(int fotoDePerfil, String nombre, String ultimoMensaje, String hora){
+    public void agregarAmigo(int fotoDePerfil, String nombre, String ultimoMensaje, String hora,String id){
         AmigosAtributos amigosAtributos = new AmigosAtributos();
         amigosAtributos.setFotoDePerfil(fotoDePerfil);
         amigosAtributos.setNombre(nombre);
         amigosAtributos.setUltimoMensaje(ultimoMensaje);
         amigosAtributos.setHora(hora);
+        amigosAtributos.setId(id);
         atributosList.add(amigosAtributos);
         adapter.notifyDataSetChanged();
     }
@@ -103,7 +104,7 @@ public class ActivityAmigos extends AppCompatActivity {
                     JSONArray jsonArray = new JSONArray(TodosLosDatos);
                     for(int i=0;i<jsonArray.length();i++){
                         JSONObject js = jsonArray.getJSONObject(i);
-                        agregarAmigo(R.drawable.prueba,js.getString("nombre"),"mensaje "+i,"00:00");
+                        agregarAmigo(R.drawable.prueba,js.getString("nombre"),"mensaje "+i,"00:00",js.getString("id"));
                     }
                 } catch (JSONException e) {
                     Toast.makeText(ActivityAmigos.this,"Ocurrio un error al descomponer el JSON",Toast.LENGTH_SHORT).show();
