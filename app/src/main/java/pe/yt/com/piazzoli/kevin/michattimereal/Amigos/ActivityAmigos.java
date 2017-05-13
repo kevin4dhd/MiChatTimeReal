@@ -101,10 +101,20 @@ public class ActivityAmigos extends AppCompatActivity {
             public void onResponse(JSONObject datos) {
                 try {
                     String TodosLosDatos = datos.getString("resultado");
+                    String TodosLosUsuariosQueTienenToken = datos.getString("usuariosConTokens");
                     JSONArray jsonArray = new JSONArray(TodosLosDatos);
+                    JSONArray jsUserTokens = new JSONArray(TodosLosUsuariosQueTienenToken);
+                    String NuestroUsuario = Preferences.obtenerPreferenceString(ActivityAmigos.this,Preferences.PREFERENCE_USUARIO_LOGIN);
                     for(int i=0;i<jsonArray.length();i++){
                         JSONObject js = jsonArray.getJSONObject(i);
-                        agregarAmigo(R.drawable.prueba,js.getString("nombre"),"mensaje "+i,"00:00",js.getString("id"));
+                        if(!NuestroUsuario.equals(js.getString("id"))){
+                            for(int k=0;k<jsUserTokens.length();k++){
+                                JSONObject UsuarioConTokens = jsUserTokens.getJSONObject(k);
+                                if(js.getString("id").equals(UsuarioConTokens.getString("id"))){
+                                    agregarAmigo(R.drawable.prueba,js.getString("nombre"),"mensaje "+i,"00:00",js.getString("id"));
+                                }
+                            }
+                        }
                     }
                 } catch (JSONException e) {
                     Toast.makeText(ActivityAmigos.this,"Ocurrio un error al descomponer el JSON",Toast.LENGTH_SHORT).show();

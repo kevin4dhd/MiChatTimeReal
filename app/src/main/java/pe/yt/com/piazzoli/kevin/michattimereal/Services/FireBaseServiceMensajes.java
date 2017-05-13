@@ -33,9 +33,10 @@ public class FireBaseServiceMensajes extends FirebaseMessagingService {
         String cabezera =  remoteMessage.getData().get("cabezera");
         String cuerpo =  remoteMessage.getData().get("cuerpo");
         String receptor = remoteMessage.getData().get("receptor");
-        Mensaje(mensaje,hora,receptor);
+        String emisorPHP = remoteMessage.getData().get("emisor");
         String emisor = Preferences.obtenerPreferenceString(this,Preferences.PREFERENCE_USUARIO_LOGIN);
         if(emisor.equals(receptor)){
+            Mensaje(mensaje,hora,emisorPHP);
             showNotification(cabezera,cuerpo);
         }
     }
@@ -44,11 +45,11 @@ public class FireBaseServiceMensajes extends FirebaseMessagingService {
         return (getApplication().getClass() == obj);
     }
 
-    private void Mensaje(String mensaje,String hora,String receptor){
+    private void Mensaje(String mensaje,String hora,String emisor){
         Intent i = new Intent(Mensajeria.MENSAJE);
         i.putExtra("key_mensaje",mensaje);
         i.putExtra("key_hora",hora);
-        i.putExtra("key_receptor",receptor);
+        i.putExtra("key_emisor_PHP",emisor);
         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(i);
     }
 

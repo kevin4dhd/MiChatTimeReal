@@ -57,7 +57,7 @@ public class MensajeriaAdapter extends RecyclerView.Adapter<MensajeriaAdapter.Me
             holder.TvMensaje.setGravity(Gravity.RIGHT);
         }else if(mensajeDeTextos.get(position).getTipoMensaje()==2){//RECEPTOR
             holder.mensajeBG.setBackgroundResource(R.drawable.out_message_bg);
-            rl.addRule(RelativeLayout.ALIGN_PARENT_RIGHT,0);
+            rl.addRule(0,RelativeLayout.ALIGN_PARENT_RIGHT);
             rl.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
             llMensaje.gravity = Gravity.LEFT;
             llHora.gravity = Gravity.LEFT;
