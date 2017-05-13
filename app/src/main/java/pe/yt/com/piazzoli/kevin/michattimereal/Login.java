@@ -118,8 +118,8 @@ public class Login extends AppCompatActivity {
             String estado = datos.getString("resultado");
             if(estado.equals("CC")){
                 JSONObject Jsondatos = new JSONObject(datos.getString("datos"));
-                String usuario = Jsondatos.getString("id");
-                String contraseña = Jsondatos.getString("Password");
+                String usuario = Jsondatos.getString("id").toLowerCase();
+                String contraseña = Jsondatos.getString("Password").toLowerCase();
                 if(usuario.equals(USER) && contraseña.equals(PASSWORD)){
                     String Token =FirebaseInstanceId.getInstance().getToken();
                     if(Token!=null){
