@@ -1,12 +1,12 @@
-package pe.yt.com.piazzoli.kevin.michattimereal.Amigos;
+package pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.Amigos;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -21,8 +21,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import pe.yt.com.piazzoli.kevin.michattimereal.Login;
-import pe.yt.com.piazzoli.kevin.michattimereal.Mensajes.Mensajeria;
 import pe.yt.com.piazzoli.kevin.michattimereal.Preferences;
 import pe.yt.com.piazzoli.kevin.michattimereal.R;
 import pe.yt.com.piazzoli.kevin.michattimereal.VolleyRP;
@@ -31,7 +29,7 @@ import pe.yt.com.piazzoli.kevin.michattimereal.VolleyRP;
  * Created by user on 8/05/2017.
  */
 
-public class ActivityAmigos extends AppCompatActivity {
+public class FragmentAmigos extends Fragment {
 
     private RecyclerView rv;
     private List<AmigosAtributos> atributosList;
@@ -43,45 +41,23 @@ public class ActivityAmigos extends AppCompatActivity {
     private static final String URL_GET_ALL_USUARIOS = "http://kevinandroidkap.pe.hu/ArchivosPHP/Amigos_GETALL.php";
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_amigos);
-        setTitle("Amigos");
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_amigos,container,false);
 
-        volley = VolleyRP.getInstance(this);
+        volley = VolleyRP.getInstance(getContext());
         mRequest = volley.getRequestQueue();
 
         atributosList = new ArrayList<>();
 
-        rv = (RecyclerView) findViewById(R.id.amigosRecyclerView);
-        LinearLayoutManager lm = new LinearLayoutManager(this);
+        rv = (RecyclerView) v.findViewById(R.id.amigosRecyclerView);
+        LinearLayoutManager lm = new LinearLayoutManager(getContext());
         rv.setLayoutManager(lm);
 
-        adapter = new AmigosAdapter(atributosList,this);
+        adapter = new AmigosAdapter(atributosList,getContext());
         rv.setAdapter(adapter);
         SolicitudJSON();
 
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_activity_amigos,menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
-
-        if(id==R.id.NoCerrarSesionMenu){
-            Preferences.savePreferenceBoolean(ActivityAmigos.this,false,Preferences.PREFERENCE_ESTADO_BUTTON_SESION);
-            Intent i = new Intent(ActivityAmigos.this,Login.class);
-            startActivity(i);
-            finish();
-        }
-
-        return super.onOptionsItemSelected(item);
+        return v;
     }
 
     public void agregarAmigo(int fotoDePerfil, String nombre, String ultimoMensaje, String hora,String id){
@@ -104,7 +80,7 @@ public class ActivityAmigos extends AppCompatActivity {
                     String TodosLosUsuariosQueTienenToken = datos.getString("usuariosConTokens");
                     JSONArray jsonArray = new JSONArray(TodosLosDatos);
                     JSONArray jsUserTokens = new JSONArray(TodosLosUsuariosQueTienenToken);
-                    String NuestroUsuario = Preferences.obtenerPreferenceString(ActivityAmigos.this,Preferences.PREFERENCE_USUARIO_LOGIN);
+                    String NuestroUsuario = Preferences.obtenerPreferenceString(getContext(),Preferences.PREFERENCE_USUARIO_LOGIN);
                     for(int i=0;i<jsonArray.length();i++){
                         JSONObject js = jsonArray.getJSONObject(i);
                         if(!NuestroUsuario.equals(js.getString("id"))){
@@ -117,16 +93,16 @@ public class ActivityAmigos extends AppCompatActivity {
                         }
                     }
                 } catch (JSONException e) {
-                    Toast.makeText(ActivityAmigos.this,"Ocurrio un error al descomponer el JSON",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(),"Ocurrio un error al descomponer el JSON",Toast.LENGTH_SHORT).show();
                 }
             }
         },new Response.ErrorListener(){
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(ActivityAmigos.this,"Ocurrio un error, por favor contactese con el administrador",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(),"Ocurrio un error, por favor contactese con el administrador",Toast.LENGTH_SHORT).show();
             }
         });
-        VolleyRP.addToQueue(solicitud,mRequest,this,volley);
+        VolleyRP.addToQueue(solicitud,mRequest,getContext(),volley);
     }
 
 }

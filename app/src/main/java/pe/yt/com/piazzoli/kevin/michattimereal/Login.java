@@ -21,7 +21,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
-import pe.yt.com.piazzoli.kevin.michattimereal.Amigos.ActivityAmigos;
+import pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.ActivityUsuarios;
 
 public class Login extends AppCompatActivity {
 
@@ -167,7 +167,7 @@ public class Login extends AppCompatActivity {
     }
 
     public void iniciarActividadSiguiente(){
-        Intent i = new Intent(Login.this,ActivityAmigos.class);
+        Intent i = new Intent(Login.this,ActivityUsuarios.class);
         startActivity(i);
         finish();
     }

@@ -1,12 +1,15 @@
 package pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Toast;
+import android.view.Menu;
+import android.view.MenuItem;
 
+import pe.yt.com.piazzoli.kevin.michattimereal.Login;
+import pe.yt.com.piazzoli.kevin.michattimereal.Preferences;
 import pe.yt.com.piazzoli.kevin.michattimereal.R;
 
 /**
@@ -21,6 +24,7 @@ public class ActivityUsuarios extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle("Mensajeria");
         setContentView(R.layout.activity_usuarios);
         tabLayout = (TabLayout) findViewById(R.id.tabLayoutUsuarios);
         viewPager = (ViewPager) findViewById(R.id.viewPagerUsuarios);
@@ -35,9 +39,9 @@ public class ActivityUsuarios extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 if(position==0){
-                    setTitle("Login");
+                    //setTitle("Chat");
                 }else if(position==1){
-                    setTitle("Registro");
+                    //setTitle("Registro");
                 }
             }
 
@@ -47,4 +51,25 @@ public class ActivityUsuarios extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_activity_amigos,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        if(id==R.id.NoCerrarSesionMenu){
+            Preferences.savePreferenceBoolean(ActivityUsuarios.this,false,Preferences.PREFERENCE_ESTADO_BUTTON_SESION);
+            Intent i = new Intent(ActivityUsuarios.this,Login.class);
+            startActivity(i);
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }

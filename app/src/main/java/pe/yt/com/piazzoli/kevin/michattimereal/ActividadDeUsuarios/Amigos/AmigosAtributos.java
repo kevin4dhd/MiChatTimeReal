@@ -1,4 +1,4 @@
-package pe.yt.com.piazzoli.kevin.michattimereal.Amigos;
+package pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.Amigos;
 
 /**
  * Created by user on 8/05/2017.

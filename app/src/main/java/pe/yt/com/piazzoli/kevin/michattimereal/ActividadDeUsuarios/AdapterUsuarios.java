@@ -4,6 +4,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.Amigos.FragmentAmigos;
+import pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.Solicitudes.FragmentSolicitudes;
+
 /**
  * Created by user on 14/05/2017.
  */
@@ -17,11 +20,8 @@ public class AdapterUsuarios extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        if(position==0){
-            return new Fragment_1();
-        }else if(position==1){
-            return new Fragment_2();
-        }
+        if(position==0) return new FragmentAmigos();
+        else if(position==1) return new FragmentSolicitudes();
         return null;
     }
 
@@ -32,11 +32,8 @@ public class AdapterUsuarios extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        if(position==0){
-            return "Fragment de login";
-        }else if(position==1){
-            return "Fragment de Registro";
-        }
+        if(position==0) return "Chat";
+        else if(position==1)return "Solicitudes";
         return null;
     }
 }

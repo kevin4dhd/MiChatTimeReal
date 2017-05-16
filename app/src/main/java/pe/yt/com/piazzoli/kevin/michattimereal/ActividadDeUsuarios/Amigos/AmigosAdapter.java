@@ -1,4 +1,4 @@
-package pe.yt.com.piazzoli.kevin.michattimereal.Amigos;
+package pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.Amigos;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,12 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
 import pe.yt.com.piazzoli.kevin.michattimereal.Mensajes.Mensajeria;
-import pe.yt.com.piazzoli.kevin.michattimereal.Mensajes.MensajeriaAdapter;
 import pe.yt.com.piazzoli.kevin.michattimereal.R;
 
 /**
