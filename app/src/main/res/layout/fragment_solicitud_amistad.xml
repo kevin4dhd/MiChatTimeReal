@@ -12,5 +12,24 @@
         tools:listitem="@layout/card_view_solicitudes"
         >
     </android.support.v7.widget.RecyclerView>
+    <LinearLayout
+        android:id="@+id/layoutVacioSolicitudes"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_supervisor_account"
+            android:tint="@color/colorAccent"/>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="No tienes ninguna solicitud de amistad"
+            android:textColor="#000000" />
+    </LinearLayout>
 </LinearLayout>
