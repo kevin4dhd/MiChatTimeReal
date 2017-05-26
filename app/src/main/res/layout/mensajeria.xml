@@ -38,19 +38,6 @@
                 android:layout_height="wrap_content"
                 app:navigationIcon="?attr/homeAsUpIndicator"
                 >
-                <LinearLayout
-                    android:paddingLeft="10sp"
-                    android:paddingRight="10sp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:src="@drawable/ic_action_key"
-                        android:background="@android:color/transparent"/>
-                </LinearLayout>
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.AppBarLayout>
         <android.support.v7.widget.RecyclerView
