@@ -5,6 +5,7 @@ package pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.Usuarios;
  */
 
 public class UsuarioBuscadorAtributos {
+    private String id;
     private int fotoPerfil;
     private String nombre;
     private String estadoUsuario;
@@ -31,5 +32,13 @@ public class UsuarioBuscadorAtributos {
 
     public void setEstadoUsuario(String estadoUsuario) {
         this.estadoUsuario = estadoUsuario;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

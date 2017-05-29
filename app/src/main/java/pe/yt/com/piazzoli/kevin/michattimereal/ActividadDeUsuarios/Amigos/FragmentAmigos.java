@@ -38,7 +38,7 @@ public class FragmentAmigos extends Fragment {
     private VolleyRP volley;
     private RequestQueue mRequest;
 
-    private static final String URL_GET_ALL_USUARIOS = "http://kevinandroidkap.pe.hu/ArchivosPHP/Amigos_GETALL.php";
+    private static final String URL_GET_ALL_USUARIOS = "http://kevinandroidkap.pe.hu/ArchivosPHP/Usuarios_GETALL.php";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -77,19 +77,12 @@ public class FragmentAmigos extends Fragment {
             public void onResponse(JSONObject datos) {
                 try {
                     String TodosLosDatos = datos.getString("resultado");
-                    String TodosLosUsuariosQueTienenToken = datos.getString("usuariosConTokens");
                     JSONArray jsonArray = new JSONArray(TodosLosDatos);
-                    JSONArray jsUserTokens = new JSONArray(TodosLosUsuariosQueTienenToken);
                     String NuestroUsuario = Preferences.obtenerPreferenceString(getContext(),Preferences.PREFERENCE_USUARIO_LOGIN);
                     for(int i=0;i<jsonArray.length();i++){
                         JSONObject js = jsonArray.getJSONObject(i);
-                        if(!NuestroUsuario.equals(js.getString("id"))){
-                            for(int k=0;k<jsUserTokens.length();k++){
-                                JSONObject UsuarioConTokens = jsUserTokens.getJSONObject(k);
-                                if(js.getString("id").equals(UsuarioConTokens.getString("id"))){
-                                    agregarAmigo(R.drawable.prueba,js.getString("nombre"),"mensaje "+i,"00:00",js.getString("id"));
-                                }
-                            }
+                        if(!js.getString("id").equals(NuestroUsuario)){
+                            agregarAmigo(R.drawable.prueba,js.getString("nombre"),"mensaje "+i,"00:00",js.getString("id"));
                         }
                     }
                 } catch (JSONException e) {
