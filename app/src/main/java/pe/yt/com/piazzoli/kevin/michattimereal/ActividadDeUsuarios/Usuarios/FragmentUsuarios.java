@@ -19,6 +19,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,6 +27,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.ClasesComunicacion.Prueba;
 import pe.yt.com.piazzoli.kevin.michattimereal.Preferences;
 import pe.yt.com.piazzoli.kevin.michattimereal.R;
 import pe.yt.com.piazzoli.kevin.michattimereal.VolleyRP;
@@ -46,6 +48,8 @@ public class FragmentUsuarios extends Fragment {
     private RequestQueue mRequest;
 
     private static final String URL_GET_ALL_USUARIOS = "http://kevinandroidkap.pe.hu/ArchivosPHP/Usuarios_GETALL.php";
+
+    private EventBus bus = EventBus.getDefault();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -75,6 +79,7 @@ public class FragmentUsuarios extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 buscador(""+s);
+                bus.post(new Prueba(""+s));
             }
 
             @Override

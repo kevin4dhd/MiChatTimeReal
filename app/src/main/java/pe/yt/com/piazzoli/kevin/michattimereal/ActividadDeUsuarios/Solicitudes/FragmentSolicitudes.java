@@ -10,9 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.ClasesComunicacion.Prueba;
 import pe.yt.com.piazzoli.kevin.michattimereal.R;
 
 /**
@@ -25,6 +29,8 @@ public class FragmentSolicitudes extends Fragment {
     private SolicitudesAdapter adapter;
     private List<Solicitudes> listSolicitudes;
     private LinearLayout layoutSinSolicitudes;
+
+    private EventBus bus = EventBus.getDefault();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -72,6 +78,23 @@ public class FragmentSolicitudes extends Fragment {
     public void actualizarTarjetas(){
         adapter.notifyDataSetChanged();
         verificarSiTenemosSolicitudes();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        bus.unregister(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        bus.register(this);
+    }
+
+    @Subscribe
+    public void ejecutarLLamada(Prueba b){
+        agregarTarjetasDeSolicitud(R.drawable.ic_account_circle,b.getNombre(),"00:00");
     }
 
 }

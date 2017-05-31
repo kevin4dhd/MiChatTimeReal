@@ -5,6 +5,7 @@ package pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.Usuarios;
  */
 
 public class UsuarioBuscadorAtributos {
+
     private String id;
     private int fotoPerfil;
     private String nombre;
