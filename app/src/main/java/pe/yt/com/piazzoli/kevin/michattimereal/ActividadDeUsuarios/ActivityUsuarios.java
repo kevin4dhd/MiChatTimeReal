@@ -7,7 +7,11 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
+import org.json.JSONObject;
+
+import pe.yt.com.piazzoli.kevin.michattimereal.Internet.SolicitudesJson;
 import pe.yt.com.piazzoli.kevin.michattimereal.Login;
 import pe.yt.com.piazzoli.kevin.michattimereal.Preferences;
 import pe.yt.com.piazzoli.kevin.michattimereal.R;
@@ -50,6 +54,20 @@ public class ActivityUsuarios extends AppCompatActivity {
 
             }
         });
+        
+        SolicitudesJson sj = new SolicitudesJson() {
+            @Override
+            public void solicitudCompletada(JSONObject j) {
+                Toast.makeText(ActivityUsuarios.this,j.toString(), Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void solicitudErronea() {
+
+            }
+        };
+
+        String usuario = Preferences.obtenerPreferenceString(this,Preferences.PREFERENCE_USUARIO_LOGIN);
+        sj.solicitudJsonGET(this,SolicitudesJson.URL_GET_ALL_DATOS+usuario);
     }
 
     @Override

@@ -51,10 +51,6 @@ public class FireBaseServiceMensajes extends FirebaseMessagingService {
 
     }
 
-    public boolean equals(Object obj) {
-        return (getApplication().getClass() == obj);
-    }
-
     private void Mensaje(String mensaje,String hora,String emisor){
         Intent i = new Intent(Mensajeria.MENSAJE);
         i.putExtra("key_mensaje",mensaje);
