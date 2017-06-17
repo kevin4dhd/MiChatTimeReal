@@ -9,8 +9,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.ClasesComunicacion.Usuario;
 import pe.yt.com.piazzoli.kevin.michattimereal.Internet.SolicitudesJson;
 import pe.yt.com.piazzoli.kevin.michattimereal.Login;
 import pe.yt.com.piazzoli.kevin.michattimereal.Preferences;
@@ -58,11 +61,32 @@ public class ActivityUsuarios extends AppCompatActivity {
         SolicitudesJson sj = new SolicitudesJson() {
             @Override
             public void solicitudCompletada(JSONObject j) {
-                Toast.makeText(ActivityUsuarios.this,j.toString(), Toast.LENGTH_SHORT).show();
+                try {
+                    JSONArray jA = j.getJSONArray("resultado");
+                    for(int i=0;i<jA.length();i++){
+                        JSONObject json = jA.getJSONObject(i);
+                        String id = json.getString("id");
+                        String nombreCompleto = json.getString("nombre")+" "+json.getString("apellidos");
+                        String estado = json.getString("estado");
+                        Usuario usuario = new Usuario();
+                        usuario.setId(id);
+                        usuario.setNombreCompleto(nombreCompleto);
+                        switch (estado){
+                            case "2"://solicitudes
+                                break;
+                            case "3"://solicitudes
+                                break;
+                            case "4"://amigos
+                                break;
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
             @Override
             public void solicitudErronea() {
-
+                Toast.makeText(ActivityUsuarios.this, "ocurrio un error al momento de pedir datos en activity usuarios", Toast.LENGTH_SHORT).show();
             }
         };
 

@@ -90,6 +90,9 @@ public class FragmentUsuarios extends Fragment {
         return v;
     }
 
+    //nombre
+    //estadoUsuario
+    //id
     public void insertarUsuario(int fotoPerfil,String nombre,String estadoUsuario,String id){
         UsuarioBuscadorAtributos buscadorAtributos = new UsuarioBuscadorAtributos();
         buscadorAtributos.setFotoPerfil(fotoPerfil);

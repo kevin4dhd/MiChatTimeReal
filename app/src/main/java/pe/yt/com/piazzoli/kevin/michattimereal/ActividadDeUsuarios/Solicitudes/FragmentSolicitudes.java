@@ -86,11 +86,15 @@ public class FragmentSolicitudes extends Fragment {
     }
 
 
-    public void agregarTarjetasDeSolicitud(int fotoPerfil,String nombre, String hora){
+    //nombre
+    //hora
+    //id
+    public void agregarTarjetasDeSolicitud(int fotoPerfil,String id,String nombre, String hora){
         Solicitudes solicitudes = new Solicitudes();
         solicitudes.setFotoPerfil(fotoPerfil);
         solicitudes.setNombre(nombre);
         solicitudes.setHora(hora);
+        solicitudes.setId(id);
         listSolicitudes.add(solicitudes);
         actualizarTarjetas();
     }
@@ -114,7 +118,7 @@ public class FragmentSolicitudes extends Fragment {
 
     @Subscribe
     public void ejecutarLLamada(Prueba b){
-        agregarTarjetasDeSolicitud(R.drawable.ic_account_circle,b.getNombre(),"00:00");
+        agregarTarjetasDeSolicitud(R.drawable.ic_account_circle,"nulo",b.getNombre(),"00:00");
     }
 
     public void SolicitudJSON(String URL){
@@ -126,7 +130,7 @@ public class FragmentSolicitudes extends Fragment {
                     JSONArray jsonArray = new JSONArray(TodosLosDatos);
                     for(int i =0;i<jsonArray.length();i++){
                         JSONObject jsonObject = new JSONObject(jsonArray.getString(i));
-                        agregarTarjetasDeSolicitud(R.drawable.ic_account_circle,jsonObject.getString("nombre")+" "+jsonObject.getString("apellidos"),
+                        agregarTarjetasDeSolicitud(R.drawable.ic_account_circle,"",jsonObject.getString("nombre")+" "+jsonObject.getString("apellidos"),
                                 jsonObject.getString("fecha_amigos"));
                     }
                 } catch (JSONException e) {
