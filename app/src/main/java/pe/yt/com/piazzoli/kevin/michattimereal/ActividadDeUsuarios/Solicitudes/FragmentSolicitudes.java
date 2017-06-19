@@ -1,7 +1,6 @@
 package pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.Solicitudes;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -25,7 +24,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.ClasesComunicacion.Prueba;
 import pe.yt.com.piazzoli.kevin.michattimereal.Preferences;
 import pe.yt.com.piazzoli.kevin.michattimereal.R;
 import pe.yt.com.piazzoli.kevin.michattimereal.VolleyRP;
@@ -43,18 +41,13 @@ public class FragmentSolicitudes extends Fragment {
 
     private EventBus bus = EventBus.getDefault();
 
-    private VolleyRP volley;
-    private RequestQueue mRequest;
-
-    private static final String URL_GET_ALL_USUARIOS = "http://kevinandroidkap.pe.hu/ArchivosPHP/Amigos_GETALL.php?id=";
+    //private static final String URL_GET_ALL_USUARIOS = "http://kevinandroidkap.pe.hu/ArchivosPHP/Amigos_GETALL.php?id=";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_solicitud_amistad,container,false);
 
         listSolicitudes = new ArrayList<>();
-        volley = VolleyRP.getInstance(getContext());
-        mRequest = volley.getRequestQueue();
 
         rv = (RecyclerView) v.findViewById(R.id.cardviewSolicitudes);
         layoutSinSolicitudes = (LinearLayout) v.findViewById(R.id.layoutVacioSolicitudes);
@@ -68,8 +61,8 @@ public class FragmentSolicitudes extends Fragment {
             agregarTarjetasDeSolicitud(R.drawable.ic_account_circle,"usuario "+i,"00:00");
         }*/
 
-        String usuario = Preferences.obtenerPreferenceString(getContext(),Preferences.PREFERENCE_USUARIO_LOGIN);
-        SolicitudJSON("http://kevinandroidkap.pe.hu/ArchivosPHP/Amigos_GETALL.php?id="+usuario);
+        //String usuario = Preferences.obtenerPreferenceString(getContext(),Preferences.PREFERENCE_USUARIO_LOGIN);
+        //SolicitudJSON("http://kevinandroidkap.pe.hu/ArchivosPHP/Amigos_GETALL.php?id="+usuario);
         verificarSiTenemosSolicitudes();
 
         return v;
@@ -92,9 +85,14 @@ public class FragmentSolicitudes extends Fragment {
     public void agregarTarjetasDeSolicitud(int fotoPerfil,String id,String nombre, String hora){
         Solicitudes solicitudes = new Solicitudes();
         solicitudes.setFotoPerfil(fotoPerfil);
-        solicitudes.setNombre(nombre);
+        solicitudes.setNombreCompleto(nombre);
         solicitudes.setHora(hora);
         solicitudes.setId(id);
+        listSolicitudes.add(solicitudes);
+        actualizarTarjetas();
+    }
+
+    public void agregarTarjetasDeSolicitud(Solicitudes solicitudes){
         listSolicitudes.add(solicitudes);
         actualizarTarjetas();
     }
@@ -117,12 +115,12 @@ public class FragmentSolicitudes extends Fragment {
     }
 
     @Subscribe
-    public void ejecutarLLamada(Prueba b){
-        agregarTarjetasDeSolicitud(R.drawable.ic_account_circle,"nulo",b.getNombre(),"00:00");
+    public void ejecutarLLamada(Solicitudes b){
+        agregarTarjetasDeSolicitud(b);
     }
 
     public void SolicitudJSON(String URL){
-        JsonObjectRequest solicitud = new JsonObjectRequest(URL,null, new Response.Listener<JSONObject>(){
+        /*JsonObjectRequest solicitud = new JsonObjectRequest(URL,null, new Response.Listener<JSONObject>(){
             @Override
             public void onResponse(JSONObject datos) {
                 try {
@@ -143,7 +141,7 @@ public class FragmentSolicitudes extends Fragment {
                 Toast.makeText(getContext(),"Ocurrio un error, por favor contactese con el administrador",Toast.LENGTH_SHORT).show();
             }
         });
-        VolleyRP.addToQueue(solicitud,mRequest,getContext(),volley);
+        VolleyRP.addToQueue(solicitud,mRequest,getContext(),volley);*/
     }
 
 }

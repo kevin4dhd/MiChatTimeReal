@@ -33,8 +33,8 @@ public class UsuariosBuscadorAdapter extends RecyclerView.Adapter<HolderUsuarios
     @Override
     public void onBindViewHolder(HolderUsuariosBuscador holder, int position) {
         holder.getFotoPerfil().setImageResource(atributosList.get(position).getFotoPerfil());
-        holder.getNameUsuario().setText(atributosList.get(position).getNombre());
-        holder.getEstadoUsuario().setText(atributosList.get(position).getEstadoUsuario());
+        holder.getNameUsuario().setText(atributosList.get(position).getNombreCompleto());
+        holder.getEstadoUsuario().setText(""+atributosList.get(position).getEstado());
     }
 
     @Override

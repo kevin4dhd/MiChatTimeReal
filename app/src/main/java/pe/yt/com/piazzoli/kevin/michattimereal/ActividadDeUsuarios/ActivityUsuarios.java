@@ -9,11 +9,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.Amigos.AmigosAtributos;
 import pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.ClasesComunicacion.Usuario;
+import pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.Solicitudes.Solicitudes;
+import pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.Usuarios.UsuarioBuscadorAtributos;
 import pe.yt.com.piazzoli.kevin.michattimereal.Internet.SolicitudesJson;
 import pe.yt.com.piazzoli.kevin.michattimereal.Login;
 import pe.yt.com.piazzoli.kevin.michattimereal.Preferences;
@@ -27,12 +31,14 @@ public class ActivityUsuarios extends AppCompatActivity {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    private EventBus bus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle("Mensajeria");
         setContentView(R.layout.activity_usuarios);
+        bus = EventBus.getDefault();
         tabLayout = (TabLayout) findViewById(R.id.tabLayoutUsuarios);
         viewPager = (ViewPager) findViewById(R.id.viewPagerUsuarios);
         tabLayout.setupWithViewPager(viewPager);
@@ -57,6 +63,7 @@ public class ActivityUsuarios extends AppCompatActivity {
 
             }
         });
+        viewPager.setOffscreenPageLimit(3);
         
         SolicitudesJson sj = new SolicitudesJson() {
             @Override
@@ -68,17 +75,47 @@ public class ActivityUsuarios extends AppCompatActivity {
                         String id = json.getString("id");
                         String nombreCompleto = json.getString("nombre")+" "+json.getString("apellidos");
                         String estado = json.getString("estado");
-                        Usuario usuario = new Usuario();
+                        UsuarioBuscadorAtributos usuario = new UsuarioBuscadorAtributos();
+                        usuario.setFotoPerfil(R.drawable.ic_account_circle);
                         usuario.setId(id);
                         usuario.setNombreCompleto(nombreCompleto);
+                        usuario.setEstado(1);
+                        Solicitudes s;
                         switch (estado){
                             case "2"://solicitudes
+                                usuario.setEstado(2);
+                                s = new Solicitudes();
+                                s.setId(id);
+                                s.setNombreCompleto(nombreCompleto);
+                                s.setFotoPerfil(R.drawable.ic_account_circle);
+                                s.setHora(json.getString("fecha_amigos"));
+                                s.setEstado(2);
+                                bus.post(s);
                                 break;
                             case "3"://solicitudes
+                                usuario.setEstado(3);
+                                s = new Solicitudes();
+                                s.setId(id);
+                                s.setNombreCompleto(nombreCompleto);
+                                s.setFotoPerfil(R.drawable.ic_account_circle);
+                                s.setHora(json.getString("fecha_amigos"));
+                                s.setEstado(3);
+                                bus.post(s);
                                 break;
                             case "4"://amigos
+                                usuario.setEstado(4);
+                                AmigosAtributos a = new AmigosAtributos();
+                                a.setId(id);
+                                a.setNombreCompleto(nombreCompleto);
+                                a.setFotoPerfil(R.drawable.ic_account_circle);
+                                a.setMensaje(json.getString("mensaje"));
+                                String hora_mensaje = json.getString("hora_del_mensaje");
+                                String hora_vector[] = hora_mensaje.split("\\,");
+                                a.setHora(hora_vector[0]);
+                                bus.post(a);
                                 break;
                         }
+                        bus.post(usuario);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

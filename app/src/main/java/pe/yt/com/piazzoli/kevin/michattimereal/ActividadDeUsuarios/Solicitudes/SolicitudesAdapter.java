@@ -38,7 +38,7 @@ public class SolicitudesAdapter extends RecyclerView.Adapter<SolicitudesAdapter.
     @Override
     public void onBindViewHolder(solicitudesHolder holder, int position) {
         holder.fotoPerfil.setImageResource(listSolicitudes.get(position).getFotoPerfil());
-        holder.nombre.setText(listSolicitudes.get(position).getNombre());
+        holder.nombre.setText(listSolicitudes.get(position).getNombreCompleto());
         holder.hora.setText(listSolicitudes.get(position).getHora());
     }
 

@@ -14,6 +14,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,6 +23,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.Solicitudes.Solicitudes;
 import pe.yt.com.piazzoli.kevin.michattimereal.Preferences;
 import pe.yt.com.piazzoli.kevin.michattimereal.R;
 import pe.yt.com.piazzoli.kevin.michattimereal.VolleyRP;
@@ -35,17 +38,13 @@ public class FragmentAmigos extends Fragment {
     private List<AmigosAtributos> atributosList;
     private AmigosAdapter adapter;
 
-    private VolleyRP volley;
-    private RequestQueue mRequest;
+    //private static final String URL_GET_ALL_USUARIOS = "http://kevinandroidkap.pe.hu/ArchivosPHP/Usuarios_GETALL.php";
 
-    private static final String URL_GET_ALL_USUARIOS = "http://kevinandroidkap.pe.hu/ArchivosPHP/Usuarios_GETALL.php";
+    private EventBus bus = EventBus.getDefault();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_amigos,container,false);
-
-        volley = VolleyRP.getInstance(getContext());
-        mRequest = volley.getRequestQueue();
 
         atributosList = new ArrayList<>();
 
@@ -55,7 +54,7 @@ public class FragmentAmigos extends Fragment {
 
         adapter = new AmigosAdapter(atributosList,getContext());
         rv.setAdapter(adapter);
-        SolicitudJSON();
+        //SolicitudJSON();
 
         return v;
     }
@@ -66,17 +65,22 @@ public class FragmentAmigos extends Fragment {
     //hora
     public void agregarAmigo(int fotoDePerfil, String nombre, String ultimoMensaje, String hora,String id){
         AmigosAtributos amigosAtributos = new AmigosAtributos();
-        amigosAtributos.setFotoDePerfil(fotoDePerfil);
-        amigosAtributos.setNombre(nombre);
-        amigosAtributos.setUltimoMensaje(ultimoMensaje);
+        amigosAtributos.setFotoPerfil(fotoDePerfil);
+        amigosAtributos.setNombreCompleto(nombre);
+        amigosAtributos.setMensaje(ultimoMensaje);
         amigosAtributos.setHora(hora);
         amigosAtributos.setId(id);
         atributosList.add(amigosAtributos);
         adapter.notifyDataSetChanged();
     }
 
+    public void agregarAmigo(AmigosAtributos a){
+        atributosList.add(a);
+        adapter.notifyDataSetChanged();
+    }
+
     public void SolicitudJSON(){
-        JsonObjectRequest solicitud = new JsonObjectRequest(URL_GET_ALL_USUARIOS,null, new Response.Listener<JSONObject>(){
+        /*JsonObjectRequest solicitud = new JsonObjectRequest(URL_GET_ALL_USUARIOS,null, new Response.Listener<JSONObject>(){
             @Override
             public void onResponse(JSONObject datos) {
                 try {
@@ -99,7 +103,23 @@ public class FragmentAmigos extends Fragment {
                 Toast.makeText(getContext(),"Ocurrio un error, por favor contactese con el administrador",Toast.LENGTH_SHORT).show();
             }
         });
-        VolleyRP.addToQueue(solicitud,mRequest,getContext(),volley);
+        VolleyRP.addToQueue(solicitud,mRequest,getContext(),volley);*/
     }
 
+    @Subscribe
+    public void ejecutarLLamada(AmigosAtributos a){
+        agregarAmigo(a);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        bus.unregister(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        bus.register(this);
+    }
 }

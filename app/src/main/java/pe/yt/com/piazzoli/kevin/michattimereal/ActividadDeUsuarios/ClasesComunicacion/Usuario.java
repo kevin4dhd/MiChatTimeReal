@@ -17,9 +17,9 @@ public class Usuario {
     private String id;
     private String nombreCompleto;
     private int estado;
-    private String fecha_amigos;
     private String mensaje;
-    private String hora_del_mensaje;
+    private String hora;
+    private int FotoPerfil;
 
     public Usuario(){
 
@@ -49,14 +49,6 @@ public class Usuario {
         this.estado = estado;
     }
 
-    public String getFecha_amigos() {
-        return fecha_amigos;
-    }
-
-    public void setFecha_amigos(String fecha_amigos) {
-        this.fecha_amigos = fecha_amigos;
-    }
-
     public String getMensaje() {
         return mensaje;
     }
@@ -65,11 +57,19 @@ public class Usuario {
         this.mensaje = mensaje;
     }
 
-    public String getHora_del_mensaje() {
-        return hora_del_mensaje;
+    public String getHora() {
+        return hora;
     }
 
-    public void setHora_del_mensaje(String hora_del_mensaje) {
-        this.hora_del_mensaje = hora_del_mensaje;
+    public void setHora(String hora) {
+        this.hora = hora;
+    }
+
+    public int getFotoPerfil() {
+        return FotoPerfil;
+    }
+
+    public void setFotoPerfil(int fotoPerfil) {
+        FotoPerfil = fotoPerfil;
     }
 }

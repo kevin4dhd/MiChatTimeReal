@@ -37,9 +37,9 @@ public class AmigosAdapter extends RecyclerView.Adapter<AmigosAdapter.HolderAmig
 
     @Override
     public void onBindViewHolder(HolderAmigos holder, final int position) {
-        holder.imageView.setImageResource(atributosList.get(position).getFotoDePerfil());
-        holder.nombre.setText(atributosList.get(position).getNombre());
-        holder.mensaje.setText(atributosList.get(position).getUltimoMensaje());
+        holder.imageView.setImageResource(atributosList.get(position).getFotoPerfil());
+        holder.nombre.setText(atributosList.get(position).getNombreCompleto());
+        holder.mensaje.setText(atributosList.get(position).getMensaje());
         holder.hora.setText(atributosList.get(position).getHora());
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
