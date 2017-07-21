@@ -7,26 +7,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
+import android.widget.LinearLayout;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.Solicitudes.Solicitudes;
-import pe.yt.com.piazzoli.kevin.michattimereal.Preferences;
 import pe.yt.com.piazzoli.kevin.michattimereal.R;
-import pe.yt.com.piazzoli.kevin.michattimereal.VolleyRP;
 
 /**
  * Created by user on 8/05/2017.
@@ -37,6 +26,7 @@ public class FragmentAmigos extends Fragment {
     private RecyclerView rv;
     private List<AmigosAtributos> atributosList;
     private AmigosAdapter adapter;
+    private LinearLayout layoutVacio;
 
     //private static final String URL_GET_ALL_USUARIOS = "http://kevinandroidkap.pe.hu/ArchivosPHP/Usuarios_GETALL.php";
 
@@ -49,6 +39,7 @@ public class FragmentAmigos extends Fragment {
         atributosList = new ArrayList<>();
 
         rv = (RecyclerView) v.findViewById(R.id.amigosRecyclerView);
+        layoutVacio = (LinearLayout) v.findViewById(R.id.layoutVacio);
         LinearLayoutManager lm = new LinearLayoutManager(getContext());
         rv.setLayoutManager(lm);
 
@@ -56,7 +47,19 @@ public class FragmentAmigos extends Fragment {
         rv.setAdapter(adapter);
         //SolicitudJSON();
 
+        verificarSiTenemosAmigos();
+
         return v;
+    }
+
+    public void verificarSiTenemosAmigos(){
+        if(atributosList.isEmpty()){
+            layoutVacio.setVisibility(View.VISIBLE);
+            rv.setVisibility(View.GONE);
+        }else{
+            layoutVacio.setVisibility(View.GONE);
+            rv.setVisibility(View.VISIBLE);
+        }
     }
 
     //id
@@ -72,11 +75,13 @@ public class FragmentAmigos extends Fragment {
         amigosAtributos.setId(id);
         atributosList.add(amigosAtributos);
         adapter.notifyDataSetChanged();
+        verificarSiTenemosAmigos();
     }
 
     public void agregarAmigo(AmigosAtributos a){
         atributosList.add(a);
         adapter.notifyDataSetChanged();
+        verificarSiTenemosAmigos();
     }
 
     public void SolicitudJSON(){

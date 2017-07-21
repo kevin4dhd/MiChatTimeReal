@@ -10,25 +10,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.Toast;
-
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
+import android.widget.LinearLayout;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import pe.yt.com.piazzoli.kevin.michattimereal.Preferences;
 import pe.yt.com.piazzoli.kevin.michattimereal.R;
-import pe.yt.com.piazzoli.kevin.michattimereal.VolleyRP;
 
 /**
  * Created by user on 26/05/2017.
@@ -41,6 +31,8 @@ public class FragmentUsuarios extends Fragment {
     private RecyclerView rv;
     private UsuariosBuscadorAdapter adapter;
     private EditText search;
+
+    private LinearLayout layoutVacio;
 
     //private static final String URL_GET_ALL_USUARIOS = "http://kevinandroidkap.pe.hu/ArchivosPHP/Usuarios_GETALL.php";
 
@@ -55,6 +47,7 @@ public class FragmentUsuarios extends Fragment {
 
         rv = (RecyclerView) v.findViewById(R.id.rvUsuarios);
         search = (EditText) v.findViewById(R.id.searchUsuarios);
+        layoutVacio = (LinearLayout) v.findViewById(R.id.layoutVacio);
         LinearLayoutManager lm = new LinearLayoutManager(getContext());
         rv.setLayoutManager(lm);
         adapter = new UsuariosBuscadorAdapter(atributosList,getContext());
@@ -77,7 +70,19 @@ public class FragmentUsuarios extends Fragment {
             }
         });
 
+        verificarSiExisteEsaPersona();
+
         return v;
+    }
+
+    public void verificarSiExisteEsaPersona(){
+        if(atributosList.isEmpty()){
+            layoutVacio.setVisibility(View.VISIBLE);
+            rv.setVisibility(View.GONE);
+        }else{
+            layoutVacio.setVisibility(View.GONE);
+            rv.setVisibility(View.VISIBLE);
+        }
     }
 
     //nombre
@@ -92,12 +97,14 @@ public class FragmentUsuarios extends Fragment {
         atributosList.add(buscadorAtributos);
         listAuxiliar.add(buscadorAtributos);
         adapter.notifyDataSetChanged();
+        verificarSiExisteEsaPersona();
     }
 
     public void insertarUsuario(UsuarioBuscadorAtributos b){
         atributosList.add(b);
         listAuxiliar.add(b);
         adapter.notifyDataSetChanged();
+        verificarSiExisteEsaPersona();
     }
 
     public void buscador(String texto){
@@ -108,6 +115,7 @@ public class FragmentUsuarios extends Fragment {
             }
         }
         adapter.notifyDataSetChanged();
+        verificarSiExisteEsaPersona();
     }
 
     public void SolicitudJSON(){

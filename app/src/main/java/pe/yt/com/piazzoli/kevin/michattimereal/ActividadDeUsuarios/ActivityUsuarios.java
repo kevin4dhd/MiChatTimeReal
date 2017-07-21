@@ -73,49 +73,51 @@ public class ActivityUsuarios extends AppCompatActivity {
                     for(int i=0;i<jA.length();i++){
                         JSONObject json = jA.getJSONObject(i);
                         String id = json.getString("id");
-                        String nombreCompleto = json.getString("nombre")+" "+json.getString("apellidos");
-                        String estado = json.getString("estado");
-                        UsuarioBuscadorAtributos usuario = new UsuarioBuscadorAtributos();
-                        usuario.setFotoPerfil(R.drawable.ic_account_circle);
-                        usuario.setId(id);
-                        usuario.setNombreCompleto(nombreCompleto);
-                        usuario.setEstado(1);
-                        Solicitudes s;
-                        switch (estado){
-                            case "2"://solicitudes
-                                usuario.setEstado(2);
-                                s = new Solicitudes();
-                                s.setId(id);
-                                s.setNombreCompleto(nombreCompleto);
-                                s.setFotoPerfil(R.drawable.ic_account_circle);
-                                s.setHora(json.getString("fecha_amigos"));
-                                s.setEstado(2);
-                                bus.post(s);
-                                break;
-                            case "3"://solicitudes
-                                usuario.setEstado(3);
-                                s = new Solicitudes();
-                                s.setId(id);
-                                s.setNombreCompleto(nombreCompleto);
-                                s.setFotoPerfil(R.drawable.ic_account_circle);
-                                s.setHora(json.getString("fecha_amigos"));
-                                s.setEstado(3);
-                                bus.post(s);
-                                break;
-                            case "4"://amigos
-                                usuario.setEstado(4);
-                                AmigosAtributos a = new AmigosAtributos();
-                                a.setId(id);
-                                a.setNombreCompleto(nombreCompleto);
-                                a.setFotoPerfil(R.drawable.ic_account_circle);
-                                a.setMensaje(json.getString("mensaje"));
-                                String hora_mensaje = json.getString("hora_del_mensaje");
-                                String hora_vector[] = hora_mensaje.split("\\,");
-                                a.setHora(hora_vector[0]);
-                                bus.post(a);
-                                break;
+                        if(!id.equals(Preferences.obtenerPreferenceString(ActivityUsuarios.this,Preferences.PREFERENCE_USUARIO_LOGIN))) {
+                            String nombreCompleto = json.getString("nombre") + " " + json.getString("apellidos");
+                            String estado = json.getString("estado");
+                            UsuarioBuscadorAtributos usuario = new UsuarioBuscadorAtributos();
+                            usuario.setFotoPerfil(R.drawable.ic_account_circle);
+                            usuario.setId(id);
+                            usuario.setNombreCompleto(nombreCompleto);
+                            usuario.setEstado(1);
+                            Solicitudes s;
+                            switch (estado) {
+                                case "2"://solicitudes
+                                    usuario.setEstado(2);
+                                    s = new Solicitudes();
+                                    s.setId(id);
+                                    s.setNombreCompleto(nombreCompleto);
+                                    s.setFotoPerfil(R.drawable.ic_account_circle);
+                                    s.setHora(json.getString("fecha_amigos"));
+                                    s.setEstado(2);
+                                    bus.post(s);
+                                    break;
+                                case "3"://solicitudes
+                                    usuario.setEstado(3);
+                                    s = new Solicitudes();
+                                    s.setId(id);
+                                    s.setNombreCompleto(nombreCompleto);
+                                    s.setFotoPerfil(R.drawable.ic_account_circle);
+                                    s.setHora(json.getString("fecha_amigos"));
+                                    s.setEstado(3);
+                                    bus.post(s);
+                                    break;
+                                case "4"://amigos
+                                    usuario.setEstado(4);
+                                    AmigosAtributos a = new AmigosAtributos();
+                                    a.setId(id);
+                                    a.setNombreCompleto(nombreCompleto);
+                                    a.setFotoPerfil(R.drawable.ic_account_circle);
+                                    a.setMensaje(json.getString("mensaje"));
+                                    String hora_mensaje = json.getString("hora_del_mensaje");
+                                    String hora_vector[] = hora_mensaje.split("\\,");
+                                    a.setHora(hora_vector[0]);
+                                    bus.post(a);
+                                    break;
+                            }
+                            bus.post(usuario);
                         }
-                        bus.post(usuario);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

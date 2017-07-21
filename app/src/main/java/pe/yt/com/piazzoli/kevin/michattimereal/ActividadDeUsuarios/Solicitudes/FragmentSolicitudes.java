@@ -8,25 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.Toast;
-
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import pe.yt.com.piazzoli.kevin.michattimereal.Preferences;
 import pe.yt.com.piazzoli.kevin.michattimereal.R;
-import pe.yt.com.piazzoli.kevin.michattimereal.VolleyRP;
 
 /**
  * Created by user on 16/05/2017.
@@ -50,7 +39,7 @@ public class FragmentSolicitudes extends Fragment {
         listSolicitudes = new ArrayList<>();
 
         rv = (RecyclerView) v.findViewById(R.id.cardviewSolicitudes);
-        layoutSinSolicitudes = (LinearLayout) v.findViewById(R.id.layoutVacioSolicitudes);
+        layoutSinSolicitudes = (LinearLayout) v.findViewById(R.id.layoutVacio);
         LinearLayoutManager lm = new LinearLayoutManager(getContext());
         rv.setLayoutManager(lm);
 

@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Scroller;
@@ -105,6 +106,14 @@ public class Mensajeria extends AppCompatActivity {
                 }
             }
         });
+
+        eTEscribirMensaje.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setScrollbarChat();
+            }
+        });
+
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

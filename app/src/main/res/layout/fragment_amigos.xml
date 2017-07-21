@@ -4,13 +4,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools">
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/amigosRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:listitem="@layout/card_view_amigos">
-
+        tools:listitem="@layout/card_view_amigos"
+        android:visibility="gone">
     </android.support.v7.widget.RecyclerView>
+    <LinearLayout
+        android:id="@+id/layoutVacio"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="visible">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_group_add"
+            android:tint="@color/colorAccent"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="No tienes amigos, buscalos!"
+            android:textColor="#000000" />
+    </LinearLayout>
 
 </LinearLayout>
