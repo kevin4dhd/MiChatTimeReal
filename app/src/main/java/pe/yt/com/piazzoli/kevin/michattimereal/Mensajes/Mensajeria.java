@@ -76,7 +76,7 @@ public class Mensajeria extends AppCompatActivity {
         Intent i = getIntent();
         Bundle bundle = i.getExtras();
         if (bundle != null) {
-            RECEPTOR = bundle.getString("key_receptor");
+            RECEPTOR = bundle.getString("key_receptor");//
         }
 
         volley = VolleyRP.getInstance(this);
