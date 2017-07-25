@@ -27,6 +27,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -34,6 +35,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import pe.yt.com.piazzoli.kevin.michattimereal.Internet.SolicitudesJson;
 import pe.yt.com.piazzoli.kevin.michattimereal.Login;
 import pe.yt.com.piazzoli.kevin.michattimereal.Preferences;
 import pe.yt.com.piazzoli.kevin.michattimereal.R;
@@ -88,7 +90,6 @@ public class Mensajeria extends AppCompatActivity {
 
         rv = (RecyclerView) findViewById(R.id.rvMensajes);
         LinearLayoutManager lm = new LinearLayoutManager(this);
-        lm.setStackFromEnd(true);//Mensajeria
         rv.setLayoutManager(lm);
 
         adapter = new MensajeriaAdapter(mensajeDeTextos,this);
@@ -110,7 +111,18 @@ public class Mensajeria extends AppCompatActivity {
         eTEscribirMensaje.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setScrollbarChat();
+
+                rv.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(((InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE)).isActive()){
+                            setScrollbarChat();
+                        }else{
+                            rv.postDelayed(this,100);
+                        }
+                    }
+                },100);
+
             }
         });
 
@@ -136,6 +148,34 @@ public class Mensajeria extends AppCompatActivity {
                 }
             }
         };
+
+        SolicitudesJson s = new SolicitudesJson() {
+            @Override
+            public void solicitudCompletada(JSONObject j) {
+                try {
+                    JSONArray js = j.getJSONArray("resultado");
+                    for(int i=0;i<js.length();i++){
+                        JSONObject jo = js.getJSONObject(i);
+                        String menasje = jo.getString("mensaje");
+                        String hora = jo.getString("hora_del_mensaje").split(",")[0];
+                        int tipoMenasje = jo.getInt("tipo_mensaje");
+                        CreateMensaje(menasje,hora,tipoMenasje);
+                    }
+
+                } catch (JSONException e) {
+                    Toast.makeText(Mensajeria.this, "Ocurrio un error al descomprimir los mensajes", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void solicitudErronea() {
+
+            }
+        };
+        HashMap<String,String> hs = new HashMap<>();
+        hs.put("emisor",EMISOR);
+        hs.put("receptor",RECEPTOR);
+        s.solicitudJsonPOST(this,SolicitudesJson.URL_GET_ALL_MENSAJES_USUARIO,hs);
 
     }
 
