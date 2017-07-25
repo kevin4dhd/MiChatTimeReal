@@ -142,7 +142,7 @@ public class Mensajeria extends AppCompatActivity {
                 String mensaje = intent.getStringExtra("key_mensaje");
                 String hora = intent.getStringExtra("key_hora");
                 String horaParametros[] = hora.split("\\,");
-                String emisor = intent.getStringExtra("key_emisor_PHP");
+                String emisor = intent.getStringExtra("key_emisor_PHP");//xD
                 if(emisor.equals(RECEPTOR)){
                     CreateMensaje(mensaje,horaParametros[0],2);
                 }
