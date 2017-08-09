@@ -42,7 +42,7 @@ public class UsuariosBuscadorAdapter extends RecyclerView.Adapter<HolderUsuarios
         holder.getNameUsuario().setText(atributosList.get(position).getNombreCompleto());
         holder.getEstadoUsuario().setText(""+atributosList.get(position).getEstado());
 
-        holder.getEnviarSolicitud().setOnClickListener(new View.OnClickListener() {
+        /*holder.getEnviarSolicitud().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -66,7 +66,7 @@ public class UsuariosBuscadorAdapter extends RecyclerView.Adapter<HolderUsuarios
                 s.solicitudJsonPOST(context,SolicitudesJson.URL_ENVIAR_SOLICITUD,hs);
 
             }
-        });
+        });*/
 
     }
 
