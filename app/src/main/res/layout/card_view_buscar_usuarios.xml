@@ -48,6 +48,14 @@
                         android:layout_weight="1"
                         android:gravity="center"/>
                     <Button
+                        android:id="@+id/buttonEstado3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/efecto_button_transparente"
+                        android:hint="Change"
+                        android:textColorHint="@color/colorAccent"
+                        android:textStyle="bold" />
+                    <Button
                         android:id="@+id/enviarSolicitud"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

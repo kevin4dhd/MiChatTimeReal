@@ -18,6 +18,7 @@ public class HolderUsuariosBuscador extends RecyclerView.ViewHolder {
     private TextView nameUsuario;
     private TextView estadoUsuario;
     private Button enviarSolicitud;
+    private Button buttonEstado3;
 
     public HolderUsuariosBuscador(View itemView) {
         super(itemView);
@@ -25,6 +26,7 @@ public class HolderUsuariosBuscador extends RecyclerView.ViewHolder {
         nameUsuario = (TextView) itemView.findViewById(R.id.nombreUsuario);
         estadoUsuario = (TextView) itemView.findViewById(R.id.estadoUsuario);
         enviarSolicitud = (Button) itemView.findViewById(R.id.enviarSolicitud);
+        buttonEstado3 = (Button) itemView.findViewById(R.id.buttonEstado3);
     }
 
     public ImageView getFotoPerfil() {
@@ -57,5 +59,13 @@ public class HolderUsuariosBuscador extends RecyclerView.ViewHolder {
 
     public void setEnviarSolicitud(Button enviarSolicitud) {
         this.enviarSolicitud = enviarSolicitud;
+    }
+
+    public Button getButtonEstado3() {
+        return buttonEstado3;
+    }
+
+    public void setButtonEstado3(Button buttonEstado3) {
+        this.buttonEstado3 = buttonEstado3;
     }
 }

@@ -1,6 +1,7 @@
 package pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.Usuarios;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,6 +41,72 @@ public class UsuariosBuscadorAdapter extends RecyclerView.Adapter<HolderUsuarios
     public void onBindViewHolder(HolderUsuariosBuscador holder, final int position) {
         holder.getFotoPerfil().setImageResource(atributosList.get(position).getFotoPerfil());
         holder.getNameUsuario().setText(atributosList.get(position).getNombreCompleto());
+        switch (atributosList.get(position).getEstado()){
+            case 1://no son amigos ni tienen solicitudes de amistad
+                holder.getEnviarSolicitud().setHint("Enviar Solicitud");
+                holder.getButtonEstado3().setVisibility(View.GONE);//invisible
+
+                holder.getEnviarSolicitud().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(context, "Enviando solicitud...", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                holder.getEnviarSolicitud().setHintTextColor(ContextCompat.getColor(context, R.color.colorBlue));
+
+                break;
+            case 2://solicitud pendiente a que el usuario receptor acepte
+                holder.getButtonEstado3().setVisibility(View.GONE);//invisible
+                holder.getEnviarSolicitud().setHint("Cancelar");
+
+                holder.getEnviarSolicitud().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(context, "Cancelando solicitud...", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                holder.getEnviarSolicitud().setHintTextColor(ContextCompat.getColor(context, R.color.colorRed));
+
+                break;
+            case 3://solicitud pendiente a aceptar
+                holder.getButtonEstado3().setVisibility(View.VISIBLE);//visible
+                holder.getEnviarSolicitud().setHint("Cancelar");
+                holder.getButtonEstado3().setHint("Aceptar");
+
+                holder.getButtonEstado3().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(context, "Aceptando solicitud", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                holder.getEnviarSolicitud().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(context, "Cancelando solicitud", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                holder.getEnviarSolicitud().setHintTextColor(ContextCompat.getColor(context, R.color.colorRed));
+
+                break;
+            case 4://somos amigos
+                holder.getButtonEstado3().setVisibility(View.GONE);//invisible
+                holder.getEnviarSolicitud().setHint("Ver Perfil");
+
+                holder.getEnviarSolicitud().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(context, "Ver Perfil", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                holder.getEnviarSolicitud().setHintTextColor(ContextCompat.getColor(context, R.color.colorBlue));
+
+                break;
+        }
         holder.getEstadoUsuario().setText(""+atributosList.get(position).getEstado());
 
         /*holder.getEnviarSolicitud().setOnClickListener(new View.OnClickListener() {
