@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -50,7 +51,7 @@ public class FragmentUsuarios extends Fragment {
         layoutVacio = (LinearLayout) v.findViewById(R.id.layoutVacio);
         LinearLayoutManager lm = new LinearLayoutManager(getContext());
         rv.setLayoutManager(lm);
-        adapter = new UsuariosBuscadorAdapter(atributosList,getContext());
+        adapter = new UsuariosBuscadorAdapter(atributosList,getContext(),this);
         rv.setAdapter(adapter);
 
         search.addTextChangedListener(new TextWatcher() {
@@ -161,4 +162,32 @@ public class FragmentUsuarios extends Fragment {
         super.onResume();
         bus.register(this);
     }
+
+    public void enviarSolicitud(String id){
+        cambiarEstado(id,2);
+    }
+
+    private void cambiarEstado(String id,int estado){
+        for(int i=0;i<listAuxiliar.size();i++){
+            if(listAuxiliar.get(i).getId().equals(id)){
+                listAuxiliar.get(i).setEstado(estado);
+                break;
+            }
+        }
+        int posUsuario = -1;
+        for(int i=0;i<atributosList.size();i++){
+            if(atributosList.get(i).getId().equals(id)){
+                atributosList.get(i).setEstado(estado);
+                posUsuario = i;
+                break;
+            }
+        }
+
+        if(posUsuario!=1){
+            adapter.notifyItemChanged(posUsuario);
+        }else{
+            Toast.makeText(getContext(), "No se pudo cambiar el estado", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 }

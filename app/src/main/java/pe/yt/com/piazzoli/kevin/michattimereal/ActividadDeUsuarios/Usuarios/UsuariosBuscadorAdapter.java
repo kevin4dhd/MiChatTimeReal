@@ -25,10 +25,12 @@ public class UsuariosBuscadorAdapter extends RecyclerView.Adapter<HolderUsuarios
 
     private List<UsuarioBuscadorAtributos> atributosList;
     private Context context;
+    private FragmentUsuarios f;
 
-    public UsuariosBuscadorAdapter(List<UsuarioBuscadorAtributos> atributosList, Context context) {
+    public UsuariosBuscadorAdapter(List<UsuarioBuscadorAtributos> atributosList, Context context,FragmentUsuarios f) {
         this.atributosList = atributosList;
         this.context = context;
+        this.f = f;
     }
 
     @Override
@@ -49,6 +51,8 @@ public class UsuariosBuscadorAdapter extends RecyclerView.Adapter<HolderUsuarios
                 holder.getEnviarSolicitud().setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        //evento de click al enviar solicitud
+                        f.enviarSolicitud(atributosList.get(position).getId());
                         Toast.makeText(context, "Enviando solicitud...", Toast.LENGTH_SHORT).show();
                     }
                 });
