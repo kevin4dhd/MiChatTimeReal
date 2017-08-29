@@ -39,7 +39,6 @@
                     android:layout_height="wrap_content"
                     android:text="00:00"
                     android:textColor="#000000"
-                    android:textSize="20sp"
                     android:textStyle="italic"
                     android:layout_weight="1"
                     android:gravity="center"/>

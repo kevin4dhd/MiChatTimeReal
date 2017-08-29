@@ -71,12 +71,13 @@ public class FragmentSolicitudes extends Fragment {
     //nombre
     //hora
     //id
-    public void agregarTarjetasDeSolicitud(int fotoPerfil,String id,String nombre, String hora){
+    public void agregarTarjetasDeSolicitud(int fotoPerfil,String id,String nombre, String hora,int estado){
         Solicitudes solicitudes = new Solicitudes();
         solicitudes.setFotoPerfil(fotoPerfil);
         solicitudes.setNombreCompleto(nombre);
         solicitudes.setHora(hora);
         solicitudes.setId(id);
+        solicitudes.setEstado(estado);
         listSolicitudes.add(solicitudes);
         actualizarTarjetas();
     }

@@ -40,6 +40,16 @@ public class SolicitudesAdapter extends RecyclerView.Adapter<SolicitudesAdapter.
         holder.fotoPerfil.setImageResource(listSolicitudes.get(position).getFotoPerfil());
         holder.nombre.setText(listSolicitudes.get(position).getNombreCompleto());
         holder.hora.setText(listSolicitudes.get(position).getHora());
+
+        switch (listSolicitudes.get(position).getEstado()){
+            case 2:
+                holder.aceptar.setVisibility(View.GONE);
+                break;
+            case 3:
+                holder.aceptar.setVisibility(View.VISIBLE);
+                break;
+        }
+
     }
 
     @Override

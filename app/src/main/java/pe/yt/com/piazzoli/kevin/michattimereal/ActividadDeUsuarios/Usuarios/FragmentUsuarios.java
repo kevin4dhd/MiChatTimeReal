@@ -15,10 +15,17 @@ import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.ClasesComunicacion.Usuario;
+import pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.Solicitudes.Solicitudes;
+import pe.yt.com.piazzoli.kevin.michattimereal.Internet.SolicitudesJson;
+import pe.yt.com.piazzoli.kevin.michattimereal.Preferences;
 import pe.yt.com.piazzoli.kevin.michattimereal.R;
 
 /**
@@ -163,8 +170,58 @@ public class FragmentUsuarios extends Fragment {
         bus.register(this);
     }
 
-    public void enviarSolicitud(String id){
-        cambiarEstado(id,2);
+    public void enviarSolicitud(final String id){
+        String usuarioEmisor = Preferences.obtenerPreferenceString(getContext(),Preferences.PREFERENCE_USUARIO_LOGIN);
+
+        SolicitudesJson s = new SolicitudesJson() {
+            @Override
+            public void solicitudCompletada(JSONObject j) {
+                try {
+                    String respuesta = j.getString("respuesta");
+                    if(respuesta.equals("200")){
+                        //solicitud realizada correctamente
+                        Toast.makeText(getContext(), "La solicitud se envio correctamente", Toast.LENGTH_SHORT).show();
+                        int estado = j.getInt("estado");
+                        String nombreCompleto = j.getString("nombreCompleto");
+                        String hora = j.getString("hora").split(",")[0];
+
+                        Solicitudes s = new Solicitudes();
+                        s.setEstado(estado);
+                        s.setNombreCompleto(nombreCompleto);
+                        s.setHora(hora);
+                        s.setFotoPerfil(R.drawable.ic_account_circle);
+                        bus.post(s);
+                        cambiarEstado(id,2);
+                    }else{
+                        //solicitud fallida
+                        Toast.makeText(getContext(), "Error al enviar solicitud", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    Toast.makeText(getContext(), "Error al enviar solicitud", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void solicitudErronea() {
+                Toast.makeText(getContext(), "Ocurrio un error al enviar la solicitud de amistad", Toast.LENGTH_SHORT).show();
+            }
+        };
+        HashMap<String,String> hs = new HashMap<>();
+        hs.put("emisor",usuarioEmisor);
+        hs.put("receptor",id);
+        s.solicitudJsonPOST(getContext(),SolicitudesJson.URL_ENVIAR_SOLICITUD,hs);
+    }
+
+    public void cancelarSolicitud(String id){
+        cambiarEstado(id,1);
+    }
+
+    public void aceptarSolicitud(String id){
+        cambiarEstado(id,4);
+    }
+
+    public void eliminarUsuario(String id){
+        cambiarEstado(id,1);
     }
 
     private void cambiarEstado(String id,int estado){
@@ -183,11 +240,20 @@ public class FragmentUsuarios extends Fragment {
             }
         }
 
-        if(posUsuario!=1){
+        if(posUsuario!=-1){
             adapter.notifyItemChanged(posUsuario);
         }else{
             Toast.makeText(getContext(), "No se pudo cambiar el estado", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private Usuario obtenerUsuarioPorId(String id){
+        for(int i=0;i<atributosList.size();i++){
+            if(atributosList.get(i).getId().equals(id)){
+                return atributosList.get(i);
+            }
+        }
+        return null;
     }
 
 }

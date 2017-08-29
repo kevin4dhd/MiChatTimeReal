@@ -1,5 +1,6 @@
 package pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.Usuarios;
 
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
@@ -14,19 +15,21 @@ import pe.yt.com.piazzoli.kevin.michattimereal.R;
 
 public class HolderUsuariosBuscador extends RecyclerView.ViewHolder {
 
+    private CardView cardViewBuscador;
     private ImageView fotoPerfil;
     private TextView nameUsuario;
     private TextView estadoUsuario;
-    private Button enviarSolicitud;
-    private Button buttonEstado3;
+    private Button buttonDerecho;
+    private Button buttonIzquierdo;
 
     public HolderUsuariosBuscador(View itemView) {
         super(itemView);
         fotoPerfil = (ImageView) itemView.findViewById(R.id.fotoDePerfilSolicitud);
         nameUsuario = (TextView) itemView.findViewById(R.id.nombreUsuario);
         estadoUsuario = (TextView) itemView.findViewById(R.id.estadoUsuario);
-        enviarSolicitud = (Button) itemView.findViewById(R.id.enviarSolicitud);
-        buttonEstado3 = (Button) itemView.findViewById(R.id.buttonEstado3);
+        buttonDerecho = (Button) itemView.findViewById(R.id.buttonDerecho);
+        buttonIzquierdo = (Button) itemView.findViewById(R.id.buttonIzquierdo);
+        cardViewBuscador = (CardView) itemView.findViewById(R.id.cardViewBuscador);
     }
 
     public ImageView getFotoPerfil() {
@@ -53,19 +56,27 @@ public class HolderUsuariosBuscador extends RecyclerView.ViewHolder {
         this.estadoUsuario = estadoUsuario;
     }
 
-    public Button getEnviarSolicitud() {
-        return enviarSolicitud;
+    public Button getButtonDerecho() {
+        return buttonDerecho;
     }
 
-    public void setEnviarSolicitud(Button enviarSolicitud) {
-        this.enviarSolicitud = enviarSolicitud;
+    public void setButtonDerecho(Button buttonDerecho) {
+        this.buttonDerecho = buttonDerecho;
     }
 
-    public Button getButtonEstado3() {
-        return buttonEstado3;
+    public Button getButtonIzquierdo() {
+        return buttonIzquierdo;
     }
 
-    public void setButtonEstado3(Button buttonEstado3) {
-        this.buttonEstado3 = buttonEstado3;
+    public void setButtonIzquierdo(Button buttonIzquierdo) {
+        this.buttonIzquierdo = buttonIzquierdo;
+    }
+
+    public CardView getCardViewBuscador() {
+        return cardViewBuscador;
+    }
+
+    public void setCardViewBuscador(CardView cardViewBuscador) {
+        this.cardViewBuscador = cardViewBuscador;
     }
 }
