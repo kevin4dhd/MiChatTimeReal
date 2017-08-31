@@ -15,12 +15,14 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 
+import pe.yt.com.piazzoli.kevin.michattimereal.Internet.SolicitudesJson;
 import pe.yt.com.piazzoli.kevin.michattimereal.Mensajes.Mensajeria;
 
 /**
@@ -107,7 +109,7 @@ public class Registro extends AppCompatActivity {
         });
     }
 
-    private void registrarWebService(String usuario,String contraseña,String nombre,String apellido,String fechaNacimiento,String correo,String numero, String genero){
+    private void registrarWebService(final String usuario, String contraseña, String nombre, String apellido, String fechaNacimiento, String correo, String numero, String genero){
 
         if(!usuario.isEmpty() &&
                 !contraseña.isEmpty() &&
@@ -134,8 +136,19 @@ public class Registro extends AppCompatActivity {
                     try {
                         String estado = datos.getString("resultado");
                         if (estado.equalsIgnoreCase("El usuario se registro correctamente")) {
-                            Toast.makeText(Registro.this, estado, Toast.LENGTH_SHORT).show();
-                            finish();
+
+                            String Token = FirebaseInstanceId.getInstance().getToken();
+                            if(Token!=null){
+                                if((""+Token.charAt(0)).equalsIgnoreCase("{")) {
+                                    JSONObject js = new JSONObject(Token);//SOLO SI LES APARECE {"token":"...."} o "asdasdas"
+                                    String tokenRecortado = js.getString("token");
+                                    SubirToken(usuario,tokenRecortado);
+                                }else{
+                                    SubirToken(usuario,Token);
+                                }
+                            }
+                            else Toast.makeText(Registro.this,"El token es nulo",Toast.LENGTH_SHORT).show();
+
                         } else {
                             Toast.makeText(Registro.this, estado, Toast.LENGTH_SHORT).show();
                         }
@@ -153,6 +166,27 @@ public class Registro extends AppCompatActivity {
         }else{
             Toast.makeText(this, "Por favor llene todo los campos", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void SubirToken(String id,String token){
+        SolicitudesJson s = new SolicitudesJson() {
+            @Override
+            public void solicitudCompletada(JSONObject j) {
+                Toast.makeText(Registro.this, "Se registro correctamente", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+            @Override
+            public void solicitudErronea() {
+                Toast.makeText(Registro.this, "No se pudo subir el token", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        };
+
+        HashMap<String,String> hashMapToken = new HashMap<>();
+        hashMapToken.put("id",id);
+        hashMapToken.put("token",token);
+
+        s.solicitudJsonPOST(this,SolicitudesJson.IP_TOKEN_UPLOAD,hashMapToken);
     }
 
 

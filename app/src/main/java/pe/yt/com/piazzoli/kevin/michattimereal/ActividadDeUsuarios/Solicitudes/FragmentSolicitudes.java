@@ -8,13 +8,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.Usuarios.EliminarSolicitudFragmentUsuarios;
+import pe.yt.com.piazzoli.kevin.michattimereal.Internet.SolicitudesJson;
+import pe.yt.com.piazzoli.kevin.michattimereal.Preferences;
 import pe.yt.com.piazzoli.kevin.michattimereal.R;
 
 /**
@@ -43,7 +50,7 @@ public class FragmentSolicitudes extends Fragment {
         LinearLayoutManager lm = new LinearLayoutManager(getContext());
         rv.setLayoutManager(lm);
 
-        adapter = new SolicitudesAdapter(listSolicitudes,getContext());
+        adapter = new SolicitudesAdapter(listSolicitudes,getContext(),this);
         rv.setAdapter(adapter);
 
         /*for(int i=0;i<10;i++){
@@ -78,12 +85,12 @@ public class FragmentSolicitudes extends Fragment {
         solicitudes.setHora(hora);
         solicitudes.setId(id);
         solicitudes.setEstado(estado);
-        listSolicitudes.add(solicitudes);
+        listSolicitudes.add(0,solicitudes);
         actualizarTarjetas();
     }
 
     public void agregarTarjetasDeSolicitud(Solicitudes solicitudes){
-        listSolicitudes.add(solicitudes);
+        listSolicitudes.add(0,solicitudes);
         actualizarTarjetas();
     }
 
@@ -107,6 +114,52 @@ public class FragmentSolicitudes extends Fragment {
     @Subscribe
     public void ejecutarLLamada(Solicitudes b){
         agregarTarjetasDeSolicitud(b);
+    }
+
+    @Subscribe
+    public void cancelarSolicitud(EliminarSolicitudFragmentSolicitudes e){
+        eliminarTarjeta(e.getId());
+    }
+
+    public void cancelarSolicitud(final String id){
+        String usuarioEmisor = Preferences.obtenerPreferenceString(getContext(),Preferences.PREFERENCE_USUARIO_LOGIN);
+        SolicitudesJson s = new SolicitudesJson() {
+            @Override
+            public void solicitudCompletada(JSONObject j) {
+                try {
+                    String respueta = j.getString("respuesta");
+                    if(respueta.equals("200")){
+                        //se cancelo correctamente
+                        eliminarTarjeta(id);
+                        bus.post(new EliminarSolicitudFragmentUsuarios(id));
+                        Toast.makeText(getContext(),j.getString("resultado"), Toast.LENGTH_SHORT).show();
+                    }else if(respueta.equals("-1")){
+                        //error al cancelar
+                        Toast.makeText(getContext(),j.getString("resultado"), Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    Toast.makeText(getContext(), "No se pudo cancelar la solicitud", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void solicitudErronea() {
+
+            }
+        };
+        HashMap<String,String> h = new HashMap<>();
+        h.put("emisor",usuarioEmisor);
+        h.put("receptor",id);
+        s.solicitudJsonPOST(getContext(),SolicitudesJson.URL_CANCELAR_SOLICITUD,h);
+    }
+
+    public void eliminarTarjeta(String id){
+        for(int i=0;i<listSolicitudes.size();i++){
+            if(listSolicitudes.get(i).getId().equals(id)){
+                listSolicitudes.remove(i);
+                actualizarTarjetas();
+            }
+        }
     }
 
     public void SolicitudJSON(String URL){

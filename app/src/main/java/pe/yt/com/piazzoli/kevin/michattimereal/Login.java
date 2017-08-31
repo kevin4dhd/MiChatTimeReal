@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.ActivityUsuarios;
+import pe.yt.com.piazzoli.kevin.michattimereal.Internet.SolicitudesJson;
 
 public class Login extends AppCompatActivity {
 
@@ -39,7 +40,6 @@ public class Login extends AppCompatActivity {
     private RequestQueue mRequest;
 
     private static final String IP = "http://kevinandroidkap.pe.hu/ArchivosPHP/Login_GETID.php?id=";
-    private static final String IP_TOKEN = "http://kevinandroidkap.pe.hu/ArchivosPHP/Token_INSERTandUPDATE.php";
 
     private String USER = "";
     private String PASSWORD = "";
@@ -150,7 +150,7 @@ public class Login extends AppCompatActivity {
         hashMapToken.put("id",USER);
         hashMapToken.put("token",token);
 
-        JsonObjectRequest solicitud = new JsonObjectRequest(Request.Method.POST,IP_TOKEN,new JSONObject(hashMapToken), new Response.Listener<JSONObject>(){
+        JsonObjectRequest solicitud = new JsonObjectRequest(Request.Method.POST, SolicitudesJson.IP_TOKEN_UPLOAD,new JSONObject(hashMapToken), new Response.Listener<JSONObject>(){
             @Override
             public void onResponse(JSONObject datos) {
                 Preferences.savePreferenceBoolean(Login.this,RBsesion.isChecked(),Preferences.PREFERENCE_ESTADO_BUTTON_SESION);

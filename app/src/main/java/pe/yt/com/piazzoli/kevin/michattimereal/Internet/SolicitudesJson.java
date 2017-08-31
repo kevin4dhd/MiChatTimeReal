@@ -27,6 +27,8 @@ public abstract class SolicitudesJson {
     public final static String URL_GET_ALL_DATOS = "http://kevinandroidkap.pe.hu/ArchivosPHP/Datos_GETALL.php?id=";
     public final static String URL_GET_ALL_MENSAJES_USUARIO = "http://kevinandroidkap.pe.hu/ArchivosPHP/Mensajes_GETID.php";
     public final static String URL_ENVIAR_SOLICITUD = "http://kevinandroidkap.pe.hu/ArchivosPHP/Solicitudes_ENVIAR.php";
+    public final static String URL_CANCELAR_SOLICITUD = "http://kevinandroidkap.pe.hu/ArchivosPHP/Solicitudes_CANCELAR.php";
+    public static final String IP_TOKEN_UPLOAD = "http://kevinandroidkap.pe.hu/ArchivosPHP/Token_INSERTandUPDATE.php";
 
     public abstract void solicitudCompletada(JSONObject j);
     public abstract void solicitudErronea();

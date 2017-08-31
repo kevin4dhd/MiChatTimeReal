@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.ClasesComunicacion.Usuario;
+import pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.Solicitudes.EliminarSolicitudFragmentSolicitudes;
 import pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.Solicitudes.Solicitudes;
 import pe.yt.com.piazzoli.kevin.michattimereal.Internet.SolicitudesJson;
 import pe.yt.com.piazzoli.kevin.michattimereal.Preferences;
@@ -158,6 +159,11 @@ public class FragmentUsuarios extends Fragment {
         insertarUsuario(b);
     }
 
+    @Subscribe
+    public void cancelarSolicitud(EliminarSolicitudFragmentUsuarios b){
+        cambiarEstado(b.getId(),1);
+    }
+
     @Override
     public void onPause() {
         super.onPause();
@@ -186,13 +192,14 @@ public class FragmentUsuarios extends Fragment {
                         String hora = j.getString("hora").split(",")[0];
 
                         Solicitudes s = new Solicitudes();
+                        s.setId(id);
                         s.setEstado(estado);
                         s.setNombreCompleto(nombreCompleto);
                         s.setHora(hora);
                         s.setFotoPerfil(R.drawable.ic_account_circle);
                         bus.post(s);
                         cambiarEstado(id,2);
-                    }else{
+                    }else if(respuesta.equals("-1")){
                         //solicitud fallida
                         Toast.makeText(getContext(), "Error al enviar solicitud", Toast.LENGTH_SHORT).show();
                     }
@@ -212,8 +219,36 @@ public class FragmentUsuarios extends Fragment {
         s.solicitudJsonPOST(getContext(),SolicitudesJson.URL_ENVIAR_SOLICITUD,hs);
     }
 
-    public void cancelarSolicitud(String id){
-        cambiarEstado(id,1);
+    public void cancelarSolicitud(final String id){
+        String usuarioEmisor = Preferences.obtenerPreferenceString(getContext(),Preferences.PREFERENCE_USUARIO_LOGIN);
+        SolicitudesJson s = new SolicitudesJson() {
+            @Override
+            public void solicitudCompletada(JSONObject j) {
+                try {
+                    String respueta = j.getString("respuesta");
+                    if(respueta.equals("200")){
+                        //se cancelo correctamente
+                        cambiarEstado(id,1);
+                        bus.post(new EliminarSolicitudFragmentSolicitudes(id));
+                        Toast.makeText(getContext(),j.getString("resultado"), Toast.LENGTH_SHORT).show();
+                    }else if(respueta.equals("-1")){
+                        //error al cancelar
+                        Toast.makeText(getContext(),j.getString("resultado"), Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    Toast.makeText(getContext(), "No se pudo cancelar la solicitud", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void solicitudErronea() {
+
+            }
+        };
+        HashMap<String,String> h = new HashMap<>();
+        h.put("emisor",usuarioEmisor);
+        h.put("receptor",id);
+        s.solicitudJsonPOST(getContext(),SolicitudesJson.URL_CANCELAR_SOLICITUD,h);
     }
 
     public void aceptarSolicitud(String id){
