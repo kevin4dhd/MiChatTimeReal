@@ -22,8 +22,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.Amigos.AmigosAtributos;
 import pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.ClasesComunicacion.Usuario;
-import pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.Solicitudes.EliminarSolicitudFragmentSolicitudes;
+import pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.Solicitudes.SolicitudFragmentSolicitudes;
 import pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.Solicitudes.Solicitudes;
 import pe.yt.com.piazzoli.kevin.michattimereal.Internet.SolicitudesJson;
 import pe.yt.com.piazzoli.kevin.michattimereal.Preferences;
@@ -160,8 +161,13 @@ public class FragmentUsuarios extends Fragment {
     }
 
     @Subscribe
-    public void cancelarSolicitud(EliminarSolicitudFragmentUsuarios b){
+    public void cancelarSolicitud(SolicitudFragmentUsuarios b){
         cambiarEstado(b.getId(),1);
+    }
+
+    @Subscribe
+    public void aceptarSolicitud(AceptarSolicitudFragmentUsuarios a){
+        cambiarEstado(a.getId(),4);
     }
 
     @Override
@@ -229,7 +235,7 @@ public class FragmentUsuarios extends Fragment {
                     if(respueta.equals("200")){
                         //se cancelo correctamente
                         cambiarEstado(id,1);
-                        bus.post(new EliminarSolicitudFragmentSolicitudes(id));
+                        bus.post(new SolicitudFragmentSolicitudes(id));
                         Toast.makeText(getContext(),j.getString("resultado"), Toast.LENGTH_SHORT).show();
                     }else if(respueta.equals("-1")){
                         //error al cancelar
@@ -251,8 +257,45 @@ public class FragmentUsuarios extends Fragment {
         s.solicitudJsonPOST(getContext(),SolicitudesJson.URL_CANCELAR_SOLICITUD,h);
     }
 
-    public void aceptarSolicitud(String id){
-        cambiarEstado(id,4);
+    public void aceptarSolicitud(final String id){
+
+        String usuarioEmisor = Preferences.obtenerPreferenceString(getContext(),Preferences.PREFERENCE_USUARIO_LOGIN);
+
+        SolicitudesJson s = new SolicitudesJson() {
+            @Override
+            public void solicitudCompletada(JSONObject j) {
+                try {
+                    String respuesta = j.getString("respuesta");
+                    if(respuesta.equals("200")){
+                        //solicitud realizada correctamente
+                        cambiarEstado(id,4);//cambia el estado en buscador
+                        bus.post(new SolicitudFragmentSolicitudes(id));//elimina la tarjeta
+                        AmigosAtributos a = new AmigosAtributos();//crear nueva tarjeta para el fragment de amigos
+                        a.setId(id);
+                        a.setNombreCompleto(j.getString("nombreCompleto"));
+                        a.setFotoPerfil(R.drawable.ic_account_circle);
+                        a.setMensaje(j.getString("UltimoMensaje"));
+                        a.setHora(j.getString("hora"));
+                        a.setType_mensaje(j.getString("type_mensaje"));
+                        bus.post(a);
+                    }else if(respuesta.equals("-1")){
+                        //solicitud fallida
+                        Toast.makeText(getContext(), "Error al enviar solicitud", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    Toast.makeText(getContext(), "Error al enviar solicitud", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void solicitudErronea() {
+                Toast.makeText(getContext(), "Ocurrio un error al enviar la solicitud de amistad", Toast.LENGTH_SHORT).show();
+            }
+        };
+        HashMap<String,String> hs = new HashMap<>();
+        hs.put("emisor",usuarioEmisor);
+        hs.put("receptor",id);
+        s.solicitudJsonPOST(getContext(),SolicitudesJson.URL_ACEPTAR_SOLICITUD,hs);
     }
 
     public void eliminarUsuario(String id){

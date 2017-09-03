@@ -19,7 +19,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.Usuarios.EliminarSolicitudFragmentUsuarios;
+import pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.Amigos.AmigosAtributos;
+import pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.Usuarios.AceptarSolicitudFragmentUsuarios;
+import pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.Usuarios.SolicitudFragmentUsuarios;
 import pe.yt.com.piazzoli.kevin.michattimereal.Internet.SolicitudesJson;
 import pe.yt.com.piazzoli.kevin.michattimereal.Preferences;
 import pe.yt.com.piazzoli.kevin.michattimereal.R;
@@ -117,7 +119,7 @@ public class FragmentSolicitudes extends Fragment {
     }
 
     @Subscribe
-    public void cancelarSolicitud(EliminarSolicitudFragmentSolicitudes e){
+    public void cancelarSolicitud(SolicitudFragmentSolicitudes e){
         eliminarTarjeta(e.getId());
     }
 
@@ -131,7 +133,7 @@ public class FragmentSolicitudes extends Fragment {
                     if(respueta.equals("200")){
                         //se cancelo correctamente
                         eliminarTarjeta(id);
-                        bus.post(new EliminarSolicitudFragmentUsuarios(id));
+                        bus.post(new SolicitudFragmentUsuarios(id));
                         Toast.makeText(getContext(),j.getString("resultado"), Toast.LENGTH_SHORT).show();
                     }else if(respueta.equals("-1")){
                         //error al cancelar
@@ -151,6 +153,47 @@ public class FragmentSolicitudes extends Fragment {
         h.put("emisor",usuarioEmisor);
         h.put("receptor",id);
         s.solicitudJsonPOST(getContext(),SolicitudesJson.URL_CANCELAR_SOLICITUD,h);
+    }
+
+    public void aceptarSolicitud(final String id){
+        String usuarioEmisor = Preferences.obtenerPreferenceString(getContext(),Preferences.PREFERENCE_USUARIO_LOGIN);
+
+        SolicitudesJson s = new SolicitudesJson() {
+            @Override
+            public void solicitudCompletada(JSONObject j) {
+                try {
+                    String respuesta = j.getString("respuesta");
+                    if(respuesta.equals("200")){
+                        //solicitud realizada correctamente
+                        bus.post(new AceptarSolicitudFragmentUsuarios(id));
+                        eliminarTarjeta(id);
+                        AmigosAtributos a = new AmigosAtributos();//crear nueva tarjeta para el fragment de amigos
+                        a.setId(id);
+                        a.setNombreCompleto(j.getString("nombreCompleto"));
+                        a.setFotoPerfil(R.drawable.ic_account_circle);
+                        a.setMensaje(j.getString("UltimoMensaje"));
+                        a.setHora(j.getString("hora"));
+                        a.setType_mensaje(j.getString("type_mensaje"));
+                        bus.post(a);
+                    }else if(respuesta.equals("-1")){
+                        //solicitud fallida
+                        Toast.makeText(getContext(), "Error al enviar solicitud", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    Toast.makeText(getContext(), "Error al enviar solicitud", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void solicitudErronea() {
+                Toast.makeText(getContext(), "Ocurrio un error al enviar la solicitud de amistad", Toast.LENGTH_SHORT).show();
+            }
+        };
+        HashMap<String,String> hs = new HashMap<>();
+        hs.put("emisor",usuarioEmisor);
+        hs.put("receptor",id);
+        s.solicitudJsonPOST(getContext(),SolicitudesJson.URL_ACEPTAR_SOLICITUD,hs);
+
     }
 
     public void eliminarTarjeta(String id){

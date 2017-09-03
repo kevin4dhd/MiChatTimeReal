@@ -2,6 +2,7 @@ package pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.Amigos;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -41,6 +42,20 @@ public class AmigosAdapter extends RecyclerView.Adapter<AmigosAdapter.HolderAmig
         holder.nombre.setText(atributosList.get(position).getNombreCompleto());
         holder.mensaje.setText(atributosList.get(position).getMensaje());
         holder.hora.setText(atributosList.get(position).getHora());
+
+        if(atributosList.get(position).getMensaje().equals("null")){
+            holder.hora.setVisibility(View.GONE);
+            holder.mensaje.setText("Enviale un mensaje!");
+        }else{
+            holder.hora.setVisibility(View.VISIBLE);
+
+            if(atributosList.get(position).getType_mensaje().equals("1")){
+                holder.mensaje.setTextColor(ContextCompat.getColor(context, R.color.colorBlack));
+            }else{
+                holder.mensaje.setTextColor(ContextCompat.getColor(context, R.color.colorBlue));
+            }
+
+        }
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override

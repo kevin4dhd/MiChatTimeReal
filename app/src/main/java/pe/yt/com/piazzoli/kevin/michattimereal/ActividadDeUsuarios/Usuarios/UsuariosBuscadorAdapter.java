@@ -42,7 +42,7 @@ public class UsuariosBuscadorAdapter extends RecyclerView.Adapter<HolderUsuarios
         holder.getNameUsuario().setText(atributosList.get(position).getNombreCompleto());
         switch (atributosList.get(position).getEstado()){
             case 1://no son amigos ni tienen solicitudes de amistad
-                holder.getButtonDerecho().setHint("Enviar Solicitud");
+                holder.getButtonDerecho().setHint("Enviar SolicitudesFragment");
                 holder.getButtonIzquierdo().setVisibility(View.GONE);//invisible
 
                 holder.getButtonDerecho().setOnClickListener(new View.OnClickListener() {

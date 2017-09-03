@@ -54,6 +54,22 @@ public class SolicitudesAdapter extends RecyclerView.Adapter<SolicitudesAdapter.
                 holder.aceptar.setVisibility(View.GONE);
                 break;
             case 3:
+
+                holder.cancelar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        f.cancelarSolicitud(listSolicitudes.get(position).getId());
+                    }
+                });
+
+                holder.aceptar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        f.aceptarSolicitud(listSolicitudes.get(position).getId());
+                    }
+                });
+
+
                 holder.aceptar.setVisibility(View.VISIBLE);
                 break;
         }

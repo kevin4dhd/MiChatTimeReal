@@ -110,6 +110,7 @@ public class ActivityUsuarios extends AppCompatActivity {
                                     a.setNombreCompleto(nombreCompleto);
                                     a.setFotoPerfil(R.drawable.ic_account_circle);
                                     a.setMensaje(json.getString("mensaje"));
+                                    a.setType_mensaje(json.getString("tipo_mensaje"));
                                     String hora_mensaje = json.getString("hora_del_mensaje");
                                     String hora_vector[] = hora_mensaje.split("\\,");
                                     a.setHora(hora_vector[0]);
