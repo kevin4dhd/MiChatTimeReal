@@ -8,13 +8,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.Usuarios.EliminarAmigoFragmentUsuarios;
+import pe.yt.com.piazzoli.kevin.michattimereal.Internet.SolicitudesJson;
+import pe.yt.com.piazzoli.kevin.michattimereal.Preferences;
 import pe.yt.com.piazzoli.kevin.michattimereal.R;
 
 /**
@@ -43,7 +50,7 @@ public class FragmentAmigos extends Fragment {
         LinearLayoutManager lm = new LinearLayoutManager(getContext());
         rv.setLayoutManager(lm);
 
-        adapter = new AmigosAdapter(atributosList,getContext());
+        adapter = new AmigosAdapter(atributosList,getContext(),this);
         rv.setAdapter(adapter);
         //SolicitudJSON();
 
@@ -60,6 +67,11 @@ public class FragmentAmigos extends Fragment {
             layoutVacio.setVisibility(View.GONE);
             rv.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void actualizarTarjetas(){
+        adapter.notifyDataSetChanged();
+        verificarSiTenemosAmigos();
     }
 
     //id
@@ -114,6 +126,53 @@ public class FragmentAmigos extends Fragment {
     @Subscribe
     public void ejecutarLLamada(AmigosAtributos a){
         agregarAmigo(a);
+    }
+
+    @Subscribe
+    public void eliminarAmigo(EliminarFragmentAmigos a){
+        for(int i=0;i<atributosList.size();i++){
+            if(atributosList.get(i).getId().equals(a.getId())){
+                atributosList.remove(i);
+                actualizarTarjetas();
+            }
+        }
+    }
+
+    public void eliminarAmigo(final String id){
+
+        String usuarioEmisor = Preferences.obtenerPreferenceString(getContext(),Preferences.PREFERENCE_USUARIO_LOGIN);
+
+        SolicitudesJson s = new SolicitudesJson() {
+            @Override
+            public void solicitudCompletada(JSONObject j) {
+                try {
+                    String respuesta = j.getString("respuesta");
+                    if(respuesta.equals("200")){
+                        bus.post(new EliminarAmigoFragmentUsuarios(id));
+                        for(int i=0;i<atributosList.size();i++){
+                            if(atributosList.get(i).getId().equals(id)){
+                                atributosList.remove(i);
+                                actualizarTarjetas();
+                            }
+                        }
+                    }else if(respuesta.equals("-1")){
+                        //solicitud fallida
+                        Toast.makeText(getContext(), "Error al eliminar el usuario", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    Toast.makeText(getContext(),"Error al eliminar el usuario", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void solicitudErronea() {
+                Toast.makeText(getContext(), "Ocurrio un error al eliminar el usuario", Toast.LENGTH_SHORT).show();
+            }
+        };
+        HashMap<String,String> hs = new HashMap<>();
+        hs.put("emisor",usuarioEmisor);
+        hs.put("receptor",id);
+        s.solicitudJsonPOST(getContext(),SolicitudesJson.URL_ELIMINAR_USUARIO,hs);
     }
 
     @Override

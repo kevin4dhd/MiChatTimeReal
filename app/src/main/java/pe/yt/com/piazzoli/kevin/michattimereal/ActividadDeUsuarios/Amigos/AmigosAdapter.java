@@ -1,8 +1,10 @@
 package pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.Amigos;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -24,10 +27,12 @@ public class AmigosAdapter extends RecyclerView.Adapter<AmigosAdapter.HolderAmig
 
     private List<AmigosAtributos> atributosList;
     private Context context;
+    private FragmentAmigos f;
 
-    public AmigosAdapter(List<AmigosAtributos> atributosList,Context context){
+    public AmigosAdapter(List<AmigosAtributos> atributosList,Context context,FragmentAmigos f){
         this.atributosList = atributosList;
         this.context = context;
+        this.f=f;
     }
 
     @Override
@@ -63,6 +68,28 @@ public class AmigosAdapter extends RecyclerView.Adapter<AmigosAdapter.HolderAmig
                 Intent i = new Intent(context, Mensajeria.class);
                 i.putExtra("key_receptor",atributosList.get(position).getId());
                 context.startActivity(i);
+            }
+        });
+
+        holder.cardView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                new AlertDialog.Builder(context).
+                        setMessage("¿Estas seguro que quieres eliminar a este amigo?").
+                        setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                f.eliminarAmigo(atributosList.get(position).getId());
+                                Toast.makeText(context, "Se elimino el amigo correctamente", Toast.LENGTH_SHORT).show();
+                            }
+                        }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                        Toast.makeText(context, "Cancelando solicitud de eliminacion", Toast.LENGTH_SHORT).show();
+                    }
+                }).show();
+                return true;
             }
         });
 

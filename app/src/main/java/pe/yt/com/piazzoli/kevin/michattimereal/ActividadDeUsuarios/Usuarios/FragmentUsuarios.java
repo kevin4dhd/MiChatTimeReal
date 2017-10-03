@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.Amigos.AmigosAtributos;
+import pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.Amigos.EliminarFragmentAmigos;
 import pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.ClasesComunicacion.Usuario;
 import pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.Solicitudes.SolicitudFragmentSolicitudes;
 import pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.Solicitudes.Solicitudes;
@@ -170,6 +171,11 @@ public class FragmentUsuarios extends Fragment {
         cambiarEstado(a.getId(),4);
     }
 
+    @Subscribe
+    public void eliminarUsuario(EliminarAmigoFragmentUsuarios e){
+        cambiarEstado(e.getId(),1);
+    }
+
     @Override
     public void onPause() {
         super.onPause();
@@ -298,8 +304,35 @@ public class FragmentUsuarios extends Fragment {
         s.solicitudJsonPOST(getContext(),SolicitudesJson.URL_ACEPTAR_SOLICITUD,hs);
     }
 
-    public void eliminarUsuario(String id){
-        cambiarEstado(id,1);
+    public void eliminarUsuario(final String id){
+        String usuarioEmisor = Preferences.obtenerPreferenceString(getContext(),Preferences.PREFERENCE_USUARIO_LOGIN);
+
+        SolicitudesJson s = new SolicitudesJson() {
+            @Override
+            public void solicitudCompletada(JSONObject j) {
+                try {
+                    String respuesta = j.getString("respuesta");
+                    if(respuesta.equals("200")){
+                        cambiarEstado(id,1);
+                        bus.post(new EliminarFragmentAmigos(id));
+                    }else if(respuesta.equals("-1")){
+                        //solicitud fallida
+                        Toast.makeText(getContext(), "Error al eliminar el usuario", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    Toast.makeText(getContext(),"Error al eliminar el usuario", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void solicitudErronea() {
+                Toast.makeText(getContext(), "Ocurrio un error al eliminar el usuario", Toast.LENGTH_SHORT).show();
+            }
+        };
+        HashMap<String,String> hs = new HashMap<>();
+        hs.put("emisor",usuarioEmisor);
+        hs.put("receptor",id);
+        s.solicitudJsonPOST(getContext(),SolicitudesJson.URL_ELIMINAR_USUARIO,hs);
     }
 
     private void cambiarEstado(String id,int estado){
