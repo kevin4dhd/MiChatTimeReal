@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -92,7 +93,7 @@ public class FragmentSolicitudes extends Fragment {
     }
 
     public void agregarTarjetasDeSolicitud(Solicitudes solicitudes){
-        listSolicitudes.add(0,solicitudes);
+        listSolicitudes.add(solicitudes);
         actualizarTarjetas();
     }
 
@@ -113,12 +114,12 @@ public class FragmentSolicitudes extends Fragment {
         bus.register(this);
     }
 
-    @Subscribe
-    public void ejecutarLLamada(Solicitudes b){
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void ejecutarLLamada(final Solicitudes b){
         agregarTarjetasDeSolicitud(b);
     }
 
-    @Subscribe
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void cancelarSolicitud(SolicitudFragmentSolicitudes e){
         eliminarTarjeta(e.getId());
     }
@@ -172,7 +173,7 @@ public class FragmentSolicitudes extends Fragment {
                         a.setNombreCompleto(j.getString("nombreCompleto"));
                         a.setFotoPerfil(R.drawable.ic_account_circle);
                         a.setMensaje(j.getString("UltimoMensaje"));
-                        a.setHora(j.getString("hora"));
+                        a.setHora(j.getString("hora").split(",")[0]);
                         a.setType_mensaje(j.getString("type_mensaje"));
                         bus.post(a);
                     }else if(respuesta.equals("-1")){

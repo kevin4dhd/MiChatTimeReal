@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -123,12 +124,12 @@ public class FragmentAmigos extends Fragment {
         VolleyRP.addToQueue(solicitud,mRequest,getContext(),volley);*/
     }
 
-    @Subscribe
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void ejecutarLLamada(AmigosAtributos a){
         agregarAmigo(a);
     }
 
-    @Subscribe
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void eliminarAmigo(EliminarFragmentAmigos a){
         for(int i=0;i<atributosList.size();i++){
             if(atributosList.get(i).getId().equals(a.getId())){

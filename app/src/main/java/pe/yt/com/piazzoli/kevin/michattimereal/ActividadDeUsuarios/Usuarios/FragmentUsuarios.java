@@ -1,6 +1,8 @@
 package pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.Usuarios;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +17,7 @@ import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -161,19 +164,25 @@ public class FragmentUsuarios extends Fragment {
         insertarUsuario(b);
     }
 
-    @Subscribe
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void cancelarSolicitud(SolicitudFragmentUsuarios b){
         cambiarEstado(b.getId(),1);
     }
 
-    @Subscribe
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void aceptarSolicitud(AceptarSolicitudFragmentUsuarios a){
         cambiarEstado(a.getId(),4);
     }
 
-    @Subscribe
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void eliminarUsuario(EliminarAmigoFragmentUsuarios e){
         cambiarEstado(e.getId(),1);
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void recibirSolicitud(final RecibirSolicitudAmistadFragmentUsuarios e){
+        cambiarEstado(e.getId(),3);
     }
 
     @Override
@@ -281,7 +290,7 @@ public class FragmentUsuarios extends Fragment {
                         a.setNombreCompleto(j.getString("nombreCompleto"));
                         a.setFotoPerfil(R.drawable.ic_account_circle);
                         a.setMensaje(j.getString("UltimoMensaje"));
-                        a.setHora(j.getString("hora"));
+                        a.setHora(j.getString("hora").split(",")[0]);
                         a.setType_mensaje(j.getString("type_mensaje"));
                         bus.post(a);
                     }else if(respuesta.equals("-1")){

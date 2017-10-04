@@ -8,4 +8,11 @@ import pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.ClasesComunic
 
 public class Solicitudes extends Usuario{
 
+    public Solicitudes() {
+    }
+
+    public Solicitudes(String id, String nombreCompleto, int estado, String hora, int fotoPerfil) {
+        super(id, nombreCompleto, estado, hora, fotoPerfil);
+    }
+
 }

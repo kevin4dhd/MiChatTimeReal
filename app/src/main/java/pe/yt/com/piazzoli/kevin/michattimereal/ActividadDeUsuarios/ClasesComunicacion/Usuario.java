@@ -25,6 +25,22 @@ public class Usuario {
 
     }
 
+    public Usuario(String id, String nombreCompleto, int estado, String hora, int fotoPerfil) {
+        this.id = id;
+        this.nombreCompleto = nombreCompleto;
+        this.estado = estado;
+        this.hora = hora;
+        FotoPerfil = fotoPerfil;
+    }
+
+    public Usuario(String id, String nombreCompleto, String mensaje, String hora, int fotoPerfil) {
+        this.id = id;
+        this.nombreCompleto = nombreCompleto;
+        this.mensaje = mensaje;
+        this.hora = hora;
+        FotoPerfil = fotoPerfil;
+    }
+
     public String getId() {
         return id;
     }

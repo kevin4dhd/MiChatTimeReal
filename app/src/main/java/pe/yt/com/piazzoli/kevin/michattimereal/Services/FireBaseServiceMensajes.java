@@ -13,8 +13,19 @@ import android.support.v4.content.LocalBroadcastManager;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.Random;
 
+import pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.Amigos.AmigosAtributos;
+import pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.Amigos.EliminarFragmentAmigos;
+import pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.Solicitudes.FragmentSolicitudes;
+import pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.Solicitudes.SolicitudFragmentSolicitudes;
+import pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.Solicitudes.Solicitudes;
+import pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.Usuarios.AceptarSolicitudFragmentUsuarios;
+import pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.Usuarios.EliminarAmigoFragmentUsuarios;
+import pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.Usuarios.RecibirSolicitudAmistadFragmentUsuarios;
+import pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.Usuarios.SolicitudFragmentUsuarios;
 import pe.yt.com.piazzoli.kevin.michattimereal.Mensajes.Mensajeria;
 import pe.yt.com.piazzoli.kevin.michattimereal.Preferences;
 import pe.yt.com.piazzoli.kevin.michattimereal.R;
@@ -44,8 +55,38 @@ public class FireBaseServiceMensajes extends FirebaseMessagingService {
                 }
                 break;
             case "solicitud":
-                String usuario_envio_solicitud = remoteMessage.getData().get("user_envio_solicitud");
-                showNotification(cabezera,cuerpo);
+                String sub_tipo_solicitud = remoteMessage.getData().get("sub_type");
+                String usuario_envio_solicitud;
+                switch (sub_tipo_solicitud){
+                    case "enviar_solicitud":
+                        EventBus.getDefault().post(new Solicitudes(remoteMessage.getData().get("user_envio_solicitud"),
+                                remoteMessage.getData().get("user_envio_solicitud_nombre"),
+                                3,remoteMessage.getData().get("hora"),R.drawable.ic_account_circle));
+                        EventBus.getDefault().post(new RecibirSolicitudAmistadFragmentUsuarios(remoteMessage.getData().get("user_envio_solicitud")));
+                        usuario_envio_solicitud = remoteMessage.getData().get("user_envio_solicitud");
+                        showNotification(cabezera,cuerpo);
+                        break;
+                    case "cancelar_solicitud":
+                        EventBus.getDefault().post(new SolicitudFragmentUsuarios(remoteMessage.getData().get("user_envio_solicitud")));
+                        EventBus.getDefault().post(new SolicitudFragmentSolicitudes(remoteMessage.getData().get("user_envio_solicitud")));
+                        break;
+                    case "aceptar_solicitud":
+                        EventBus.getDefault().post(new AmigosAtributos(remoteMessage.getData().get("user_envio_solicitud"),
+                                remoteMessage.getData().get("user_envio_solicitud_nombre"),
+                                remoteMessage.getData().get("ultimoMensaje"),
+                                remoteMessage.getData().get("hora_del_mensaje").split(",")[0],
+                                R.drawable.ic_account_circle,
+                                remoteMessage.getData().get("type_mensaje")));
+                        EventBus.getDefault().post(new SolicitudFragmentSolicitudes(remoteMessage.getData().get("user_envio_solicitud")));
+                        EventBus.getDefault().post(new AceptarSolicitudFragmentUsuarios(remoteMessage.getData().get("user_envio_solicitud")));
+                        usuario_envio_solicitud = remoteMessage.getData().get("user_envio_solicitud");
+                        showNotification(cabezera,cuerpo);
+                        break;
+                    case "eliminar_amigo":
+                        EventBus.getDefault().post(new EliminarFragmentAmigos(remoteMessage.getData().get("user_envio_solicitud")));
+                        EventBus.getDefault().post(new EliminarAmigoFragmentUsuarios(remoteMessage.getData().get("user_envio_solicitud")));
+                        break;
+                }
                 break;
         }
 
