@@ -210,7 +210,7 @@ public class FragmentUsuarios extends Fragment {
                         Toast.makeText(getContext(), "La solicitud se envio correctamente", Toast.LENGTH_SHORT).show();
                         int estado = j.getInt("estado");
                         String nombreCompleto = j.getString("nombreCompleto");
-                        String hora = j.getString("hora").split(",")[0];
+                        String hora = j.getString("hora").equals("null") ? j.getString("hora") : j.getString("hora").split(",")[0];
 
                         Solicitudes s = new Solicitudes();
                         s.setId(id);

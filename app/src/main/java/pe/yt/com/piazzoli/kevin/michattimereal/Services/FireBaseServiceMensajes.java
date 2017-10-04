@@ -73,10 +73,13 @@ public class FireBaseServiceMensajes extends FirebaseMessagingService {
                     case "aceptar_solicitud":
                         EventBus.getDefault().post(new AmigosAtributos(remoteMessage.getData().get("user_envio_solicitud"),
                                 remoteMessage.getData().get("user_envio_solicitud_nombre"),
-                                remoteMessage.getData().get("ultimoMensaje"),
-                                remoteMessage.getData().get("hora_del_mensaje").split(",")[0],
+                                remoteMessage.getData().get("ultimoMensaje")==null ? "null":
+                                    remoteMessage.getData().get("ultimoMensaje"),
+                                remoteMessage.getData().get("hora_del_mensaje")==null ? "null" :
+                                        remoteMessage.getData().get("hora_del_mensaje").split(",")[0],
                                 R.drawable.ic_account_circle,
-                                remoteMessage.getData().get("type_mensaje")));
+                                remoteMessage.getData().get("type_mensaje")==null ? "null" :
+                                    remoteMessage.getData().get("type_mensaje")));
                         EventBus.getDefault().post(new SolicitudFragmentSolicitudes(remoteMessage.getData().get("user_envio_solicitud")));
                         EventBus.getDefault().post(new AceptarSolicitudFragmentUsuarios(remoteMessage.getData().get("user_envio_solicitud")));
                         usuario_envio_solicitud = remoteMessage.getData().get("user_envio_solicitud");

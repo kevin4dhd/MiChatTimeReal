@@ -93,7 +93,7 @@ public class FragmentSolicitudes extends Fragment {
     }
 
     public void agregarTarjetasDeSolicitud(Solicitudes solicitudes){
-        listSolicitudes.add(solicitudes);
+        listSolicitudes.add(0,solicitudes);
         actualizarTarjetas();
     }
 
@@ -173,7 +173,7 @@ public class FragmentSolicitudes extends Fragment {
                         a.setNombreCompleto(j.getString("nombreCompleto"));
                         a.setFotoPerfil(R.drawable.ic_account_circle);
                         a.setMensaje(j.getString("UltimoMensaje"));
-                        a.setHora(j.getString("hora").split(",")[0]);
+                        a.setHora(j.getString("hora").equals("null") ? j.getString("hora") : j.getString("hora").split(",")[0]);
                         a.setType_mensaje(j.getString("type_mensaje"));
                         bus.post(a);
                     }else if(respuesta.equals("-1")){

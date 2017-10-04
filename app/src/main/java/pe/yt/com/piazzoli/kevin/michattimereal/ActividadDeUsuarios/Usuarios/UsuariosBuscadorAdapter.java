@@ -42,7 +42,7 @@ public class UsuariosBuscadorAdapter extends RecyclerView.Adapter<HolderUsuarios
         holder.getNameUsuario().setText(atributosList.get(position).getNombreCompleto());
         switch (atributosList.get(position).getEstado()){
             case 1://no son amigos ni tienen solicitudes de amistad
-                holder.getButtonDerecho().setHint("Enviar SolicitudesFragment");
+                holder.getButtonDerecho().setHint("Enviar Solicitud");
                 holder.getButtonIzquierdo().setVisibility(View.GONE);//invisible
 
                 holder.getButtonDerecho().setOnClickListener(new View.OnClickListener() {
@@ -53,6 +53,7 @@ public class UsuariosBuscadorAdapter extends RecyclerView.Adapter<HolderUsuarios
                         Toast.makeText(context, "Enviando solicitud...", Toast.LENGTH_SHORT).show();
                     }
                 });
+                holder.getCardViewBuscador().setOnLongClickListener(null);
 
                 holder.getButtonDerecho().setHintTextColor(ContextCompat.getColor(context, R.color.colorBlue));
 
@@ -68,6 +69,7 @@ public class UsuariosBuscadorAdapter extends RecyclerView.Adapter<HolderUsuarios
                         Toast.makeText(context, "Cancelando solicitud...", Toast.LENGTH_SHORT).show();
                     }
                 });
+                holder.getCardViewBuscador().setOnLongClickListener(null);
 
                 holder.getButtonDerecho().setHintTextColor(ContextCompat.getColor(context, R.color.colorRed));
 
@@ -92,6 +94,7 @@ public class UsuariosBuscadorAdapter extends RecyclerView.Adapter<HolderUsuarios
                         Toast.makeText(context, "Cancelando solicitud", Toast.LENGTH_SHORT).show();
                     }
                 });
+                holder.getCardViewBuscador().setOnLongClickListener(null);
 
                 holder.getButtonDerecho().setHintTextColor(ContextCompat.getColor(context, R.color.colorRed));
 

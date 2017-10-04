@@ -92,7 +92,7 @@ public class FragmentAmigos extends Fragment {
     }
 
     public void agregarAmigo(AmigosAtributos a){
-        atributosList.add(a);
+        atributosList.add(0,a);
         adapter.notifyDataSetChanged();
         verificarSiTenemosAmigos();
     }
