@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 import pe.yt.com.piazzoli.kevin.michattimereal.R;
@@ -38,7 +40,7 @@ public class UsuariosBuscadorAdapter extends RecyclerView.Adapter<HolderUsuarios
 
     @Override
     public void onBindViewHolder(HolderUsuariosBuscador holder, final int position) {
-        holder.getFotoPerfil().setImageResource(atributosList.get(position).getFotoPerfil());
+        Picasso.with(context).load(atributosList.get(position).getFotoPerfil()).error(R.drawable.ic_account_circle).into(holder.getFotoPerfil());
         holder.getNameUsuario().setText(atributosList.get(position).getNombreCompleto());
         switch (atributosList.get(position).getEstado()){
             case 1://no son amigos ni tienen solicitudes de amistad

@@ -10,13 +10,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Scroller;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -24,8 +21,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.FirebaseInstanceIdService;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,11 +31,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import pe.yt.com.piazzoli.kevin.michattimereal.Internet.SolicitudesJson;
-import pe.yt.com.piazzoli.kevin.michattimereal.Login;
 import pe.yt.com.piazzoli.kevin.michattimereal.Preferences;
 import pe.yt.com.piazzoli.kevin.michattimereal.R;
-import pe.yt.com.piazzoli.kevin.michattimereal.Registro;
-import pe.yt.com.piazzoli.kevin.michattimereal.Services.FireBaseId;
 import pe.yt.com.piazzoli.kevin.michattimereal.VolleyRP;
 
 /**
@@ -71,7 +63,7 @@ public class Mensajeria extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.mensajeria);
+        setContentView(R.layout.activity_mensajes);
         mensajeDeTextos = new ArrayList<>();
 
         EMISOR = Preferences.obtenerPreferenceString(this, Preferences.PREFERENCE_USUARIO_LOGIN);

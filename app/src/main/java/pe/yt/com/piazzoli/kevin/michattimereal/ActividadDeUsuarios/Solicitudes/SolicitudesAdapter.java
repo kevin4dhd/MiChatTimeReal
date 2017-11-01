@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 import pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.Amigos.AmigosAdapter;
@@ -39,7 +41,7 @@ public class SolicitudesAdapter extends RecyclerView.Adapter<SolicitudesAdapter.
 
     @Override
     public void onBindViewHolder(solicitudesHolder holder, final int position) {
-        holder.fotoPerfil.setImageResource(listSolicitudes.get(position).getFotoPerfil());
+        Picasso.with(context).load(listSolicitudes.get(position).getFotoPerfil()).error(R.drawable.ic_account_circle).into(holder.fotoPerfil);
         holder.nombre.setText(listSolicitudes.get(position).getNombreCompleto());
         holder.hora.setText(listSolicitudes.get(position).getHora());
 

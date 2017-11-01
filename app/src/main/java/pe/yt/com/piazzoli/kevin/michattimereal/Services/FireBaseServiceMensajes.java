@@ -61,7 +61,8 @@ public class FireBaseServiceMensajes extends FirebaseMessagingService {
                     case "enviar_solicitud":
                         EventBus.getDefault().post(new Solicitudes(remoteMessage.getData().get("user_envio_solicitud"),
                                 remoteMessage.getData().get("user_envio_solicitud_nombre"),
-                                3,remoteMessage.getData().get("hora"),R.drawable.ic_account_circle));
+                                3,remoteMessage.getData().get("hora"),
+                                remoteMessage.getData().get("imagen")));
                         EventBus.getDefault().post(new RecibirSolicitudAmistadFragmentUsuarios(remoteMessage.getData().get("user_envio_solicitud")));
                         usuario_envio_solicitud = remoteMessage.getData().get("user_envio_solicitud");
                         showNotification(cabezera,cuerpo);
@@ -77,7 +78,7 @@ public class FireBaseServiceMensajes extends FirebaseMessagingService {
                                     remoteMessage.getData().get("ultimoMensaje"),
                                 remoteMessage.getData().get("hora_del_mensaje")==null ? "null" :
                                         remoteMessage.getData().get("hora_del_mensaje").split(",")[0],
-                                R.drawable.ic_account_circle,
+                                remoteMessage.getData().get("imagen"),
                                 remoteMessage.getData().get("type_mensaje")==null ? "null" :
                                     remoteMessage.getData().get("type_mensaje")));
                         EventBus.getDefault().post(new SolicitudFragmentSolicitudes(remoteMessage.getData().get("user_envio_solicitud")));

@@ -102,7 +102,7 @@ public class FragmentUsuarios extends Fragment {
     //nombre
     //estadoUsuario
     //id
-    public void insertarUsuario(int fotoPerfil,String nombre,int estadoUsuario,String id){
+    public void insertarUsuario(String fotoPerfil,String nombre,int estadoUsuario,String id){
         UsuarioBuscadorAtributos buscadorAtributos = new UsuarioBuscadorAtributos();
         buscadorAtributos.setFotoPerfil(fotoPerfil);
         buscadorAtributos.setNombreCompleto(nombre);
@@ -217,7 +217,7 @@ public class FragmentUsuarios extends Fragment {
                         s.setEstado(estado);
                         s.setNombreCompleto(nombreCompleto);
                         s.setHora(hora);
-                        s.setFotoPerfil(R.drawable.ic_account_circle);
+                        s.setFotoPerfil(j.getString("imagen"));
                         bus.post(s);
                         cambiarEstado(id,2);
                     }else if(respuesta.equals("-1")){
@@ -288,7 +288,7 @@ public class FragmentUsuarios extends Fragment {
                         AmigosAtributos a = new AmigosAtributos();//crear nueva tarjeta para el fragment de amigos
                         a.setId(id);
                         a.setNombreCompleto(j.getString("nombreCompleto"));
-                        a.setFotoPerfil(R.drawable.ic_account_circle);
+                        a.setFotoPerfil(j.getString("imagen"));
                         a.setMensaje(j.getString("UltimoMensaje"));
                         a.setHora(j.getString("hora").split(",")[0]);
                         a.setType_mensaje(j.getString("type_mensaje"));

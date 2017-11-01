@@ -4,4 +4,8 @@
         android:title="Cerrar Sesión"
         android:id="@+id/NoCerrarSesionMenu"
         />
+    <item
+        android:title="Foto De Perfil"
+        android:id="@+id/subirFotoPerfil"
+        />
 </menu>

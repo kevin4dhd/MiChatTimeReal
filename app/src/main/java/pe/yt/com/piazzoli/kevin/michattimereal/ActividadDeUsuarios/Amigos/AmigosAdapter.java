@@ -14,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 import pe.yt.com.piazzoli.kevin.michattimereal.Mensajes.Mensajeria;
@@ -43,7 +45,7 @@ public class AmigosAdapter extends RecyclerView.Adapter<AmigosAdapter.HolderAmig
 
     @Override
     public void onBindViewHolder(HolderAmigos holder, final int position) {
-        holder.imageView.setImageResource(atributosList.get(position).getFotoPerfil());
+        Picasso.with(context).load(atributosList.get(position).getFotoPerfil()).error(R.drawable.ic_account_circle).into(holder.imageView);
         holder.nombre.setText(atributosList.get(position).getNombreCompleto());
         holder.mensaje.setText(atributosList.get(position).getMensaje());
         holder.hora.setText(atributosList.get(position).getHora());

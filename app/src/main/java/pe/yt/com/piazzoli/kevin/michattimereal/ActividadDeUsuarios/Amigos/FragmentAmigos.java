@@ -79,7 +79,7 @@ public class FragmentAmigos extends Fragment {
     //nombre
     //ultimo_mensaje
     //hora
-    public void agregarAmigo(int fotoDePerfil, String nombre, String ultimoMensaje, String hora,String id){
+    public void agregarAmigo(String fotoDePerfil, String nombre, String ultimoMensaje, String hora,String id){
         AmigosAtributos amigosAtributos = new AmigosAtributos();
         amigosAtributos.setFotoPerfil(fotoDePerfil);
         amigosAtributos.setNombreCompleto(nombre);

@@ -81,7 +81,7 @@ public class FragmentSolicitudes extends Fragment {
     //nombre
     //hora
     //id
-    public void agregarTarjetasDeSolicitud(int fotoPerfil,String id,String nombre, String hora,int estado){
+    public void agregarTarjetasDeSolicitud(String fotoPerfil,String id,String nombre, String hora,int estado){
         Solicitudes solicitudes = new Solicitudes();
         solicitudes.setFotoPerfil(fotoPerfil);
         solicitudes.setNombreCompleto(nombre);
@@ -171,7 +171,7 @@ public class FragmentSolicitudes extends Fragment {
                         AmigosAtributos a = new AmigosAtributos();//crear nueva tarjeta para el fragment de amigos
                         a.setId(id);
                         a.setNombreCompleto(j.getString("nombreCompleto"));
-                        a.setFotoPerfil(R.drawable.ic_account_circle);
+                        a.setFotoPerfil(j.getString("imagen"));
                         a.setMensaje(j.getString("UltimoMensaje"));
                         a.setHora(j.getString("hora").equals("null") ? j.getString("hora") : j.getString("hora").split(",")[0]);
                         a.setType_mensaje(j.getString("type_mensaje"));

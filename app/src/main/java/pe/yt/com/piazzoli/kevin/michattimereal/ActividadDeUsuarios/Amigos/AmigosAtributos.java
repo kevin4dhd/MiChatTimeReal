@@ -13,7 +13,7 @@ public class AmigosAtributos extends Usuario{
     public AmigosAtributos() {
     }
 
-    public AmigosAtributos(String id, String nombreCompleto, String mensaje, String hora, int fotoPerfil, String type_mensaje) {
+    public AmigosAtributos(String id, String nombreCompleto, String mensaje, String hora, String fotoPerfil, String type_mensaje) {
         super(id, nombreCompleto, mensaje, hora, fotoPerfil);
         this.type_mensaje = type_mensaje;
     }

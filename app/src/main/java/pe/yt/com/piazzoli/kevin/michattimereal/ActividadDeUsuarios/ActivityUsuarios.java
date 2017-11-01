@@ -15,9 +15,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.Amigos.AmigosAtributos;
-import pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.ClasesComunicacion.Usuario;
 import pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.Solicitudes.Solicitudes;
 import pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.Usuarios.UsuarioBuscadorAtributos;
+import pe.yt.com.piazzoli.kevin.michattimereal.Imagen.ActivitySubirImagen;
 import pe.yt.com.piazzoli.kevin.michattimereal.Internet.SolicitudesJson;
 import pe.yt.com.piazzoli.kevin.michattimereal.Login;
 import pe.yt.com.piazzoli.kevin.michattimereal.Preferences;
@@ -32,6 +32,7 @@ public class ActivityUsuarios extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private EventBus bus;
+    private String URL_USER_FOTO_PERFIL = "http://kevinandroidkap.pe.hu/Imagenes/error.png";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +78,7 @@ public class ActivityUsuarios extends AppCompatActivity {
                             String nombreCompleto = json.getString("nombre") + " " + json.getString("apellidos");
                             String estado = json.getString("estado");
                             UsuarioBuscadorAtributos usuario = new UsuarioBuscadorAtributos();
-                            usuario.setFotoPerfil(R.drawable.ic_account_circle);
+                            usuario.setFotoPerfil(json.getString("imagen"));
                             usuario.setId(id);
                             usuario.setNombreCompleto(nombreCompleto);
                             usuario.setEstado(1);
@@ -88,7 +89,7 @@ public class ActivityUsuarios extends AppCompatActivity {
                                     s = new Solicitudes();
                                     s.setId(id);
                                     s.setNombreCompleto(nombreCompleto);
-                                    s.setFotoPerfil(R.drawable.ic_account_circle);
+                                    s.setFotoPerfil(json.getString("imagen"));
                                     s.setHora(json.getString("fecha_amigos"));
                                     s.setEstado(2);
                                     bus.post(s);
@@ -98,7 +99,7 @@ public class ActivityUsuarios extends AppCompatActivity {
                                     s = new Solicitudes();
                                     s.setId(id);
                                     s.setNombreCompleto(nombreCompleto);
-                                    s.setFotoPerfil(R.drawable.ic_account_circle);
+                                    s.setFotoPerfil(json.getString("imagen"));
                                     s.setHora(json.getString("fecha_amigos"));
                                     s.setEstado(3);
                                     bus.post(s);
@@ -108,7 +109,7 @@ public class ActivityUsuarios extends AppCompatActivity {
                                     AmigosAtributos a = new AmigosAtributos();
                                     a.setId(id);
                                     a.setNombreCompleto(nombreCompleto);
-                                    a.setFotoPerfil(R.drawable.ic_account_circle);
+                                    a.setFotoPerfil(json.getString("imagen"));
                                     a.setMensaje(json.getString("mensaje"));
                                     a.setType_mensaje(json.getString("tipo_mensaje"));
                                     String hora_mensaje = json.getString("hora_del_mensaje");
@@ -118,6 +119,8 @@ public class ActivityUsuarios extends AppCompatActivity {
                                     break;
                             }
                             bus.post(usuario);
+                        }else{
+                            URL_USER_FOTO_PERFIL = json.getString("imagen");
                         }
                     }
                 } catch (JSONException e) {
@@ -150,7 +153,12 @@ public class ActivityUsuarios extends AppCompatActivity {
             Intent i = new Intent(ActivityUsuarios.this,Login.class);
             startActivity(i);
             finish();
+        }else if(id==R.id.subirFotoPerfil){
+            Intent i = new Intent(ActivityUsuarios.this, ActivitySubirImagen.class);
+            i.putExtra("imagen",URL_USER_FOTO_PERFIL);
+            startActivity(i);
         }
+
         return super.onOptionsItemSelected(item);
     }
 

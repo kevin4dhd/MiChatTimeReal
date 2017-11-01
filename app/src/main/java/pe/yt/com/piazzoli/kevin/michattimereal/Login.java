@@ -124,6 +124,7 @@ public class Login extends AppCompatActivity {
                 String usuario = Jsondatos.getString("id").toLowerCase();
                 String contraseña = Jsondatos.getString("Password").toLowerCase();
                 if(usuario.equals(USER) && contraseña.equals(PASSWORD)){
+                    Preferences.savePreferenceString(Login.this,Jsondatos.getString("id"),Preferences.PREFERENCE_USUARIO_LOGIN);
                     String Token =FirebaseInstanceId.getInstance().getToken();
                     if(Token!=null){
                         if((""+Token.charAt(0)).equalsIgnoreCase("{")) {
@@ -154,7 +155,6 @@ public class Login extends AppCompatActivity {
             @Override
             public void onResponse(JSONObject datos) {
                 Preferences.savePreferenceBoolean(Login.this,RBsesion.isChecked(),Preferences.PREFERENCE_ESTADO_BUTTON_SESION);
-                Preferences.savePreferenceString(Login.this,USER,Preferences.PREFERENCE_USUARIO_LOGIN);
                 try {
                     Toast.makeText(Login.this,datos.getString("resultado"),Toast.LENGTH_SHORT).show();
                 } catch (JSONException e){}

@@ -19,13 +19,13 @@ public class Usuario {
     private int estado;
     private String mensaje;
     private String hora;
-    private int FotoPerfil;
+    private String FotoPerfil;
 
     public Usuario(){
 
     }
 
-    public Usuario(String id, String nombreCompleto, int estado, String hora, int fotoPerfil) {
+    public Usuario(String id, String nombreCompleto, int estado, String hora, String fotoPerfil) {
         this.id = id;
         this.nombreCompleto = nombreCompleto;
         this.estado = estado;
@@ -33,7 +33,7 @@ public class Usuario {
         FotoPerfil = fotoPerfil;
     }
 
-    public Usuario(String id, String nombreCompleto, String mensaje, String hora, int fotoPerfil) {
+    public Usuario(String id, String nombreCompleto, String mensaje, String hora, String fotoPerfil) {
         this.id = id;
         this.nombreCompleto = nombreCompleto;
         this.mensaje = mensaje;
@@ -81,11 +81,11 @@ public class Usuario {
         this.hora = hora;
     }
 
-    public int getFotoPerfil() {
+    public String getFotoPerfil() {
         return FotoPerfil;
     }
 
-    public void setFotoPerfil(int fotoPerfil) {
+    public void setFotoPerfil(String fotoPerfil) {
         FotoPerfil = fotoPerfil;
     }
 }
