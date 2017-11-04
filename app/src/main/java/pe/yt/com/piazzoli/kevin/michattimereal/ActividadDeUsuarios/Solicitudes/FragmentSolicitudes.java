@@ -120,6 +120,12 @@ public class FragmentSolicitudes extends Fragment {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    public void limpiarLista(final LimpiarListaSolicitudes b){
+        listSolicitudes.clear();
+        actualizarTarjetas();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void cancelarSolicitud(SolicitudFragmentSolicitudes e){
         eliminarTarjeta(e.getId());
     }

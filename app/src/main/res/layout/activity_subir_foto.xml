@@ -21,7 +21,8 @@
     </android.support.design.widget.AppBarLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0sp"
+        android:layout_weight="1"
         android:gravity="center">
         <ImageView
             android:id="@+id/fotoPerfil"
@@ -29,5 +30,20 @@
             android:layout_height="wrap_content"
             android:src="@mipmap/ic_launcher"
             />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/btnGaleria"
+            android:hint="Subir Foto Galeria"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/btnCamara"
+            android:hint="Subir Foto Camara"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 </LinearLayout>

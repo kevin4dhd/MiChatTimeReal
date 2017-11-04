@@ -139,6 +139,12 @@ public class FragmentAmigos extends Fragment {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void limpiarLista(LimpiarListaAmigos a){
+        atributosList.clear();
+        actualizarTarjetas();
+    }
+
     public void eliminarAmigo(final String id){
 
         String usuarioEmisor = Preferences.obtenerPreferenceString(getContext(),Preferences.PREFERENCE_USUARIO_LOGIN);

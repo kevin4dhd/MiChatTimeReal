@@ -170,6 +170,13 @@ public class FragmentUsuarios extends Fragment {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    public void limpiarLista(LimpiarListaUsuarios b){
+        listAuxiliar.clear();
+        atributosList.clear();
+        adapter.notifyDataSetChanged();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void aceptarSolicitud(AceptarSolicitudFragmentUsuarios a){
         cambiarEstado(a.getId(),4);
     }

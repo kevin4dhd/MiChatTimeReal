@@ -31,6 +31,7 @@ public abstract class SolicitudesJson {
     public final static String URL_ACEPTAR_SOLICITUD = "http://kevinandroidkap.pe.hu/ArchivosPHP/Solicitudes_ACEPTAR.php";
     public final static String URL_ELIMINAR_USUARIO = "http://kevinandroidkap.pe.hu/ArchivosPHP/Solicitudes_ELIMINAR.php";
     public static final String IP_TOKEN_UPLOAD = "http://kevinandroidkap.pe.hu/ArchivosPHP/Token_INSERTandUPDATE.php";
+    public static final String URL_SUBIR_FOTO = "http://kevinandroidkap.pe.hu/ArchivosPHP/Imagen_Actualizar.php";
 
     public abstract void solicitudCompletada(JSONObject j);
     public abstract void solicitudErronea();

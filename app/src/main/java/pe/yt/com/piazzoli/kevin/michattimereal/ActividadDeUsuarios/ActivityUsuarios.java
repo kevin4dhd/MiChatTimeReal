@@ -15,7 +15,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.Amigos.AmigosAtributos;
+import pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.Amigos.LimpiarListaAmigos;
+import pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.Solicitudes.LimpiarListaSolicitudes;
 import pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.Solicitudes.Solicitudes;
+import pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.Usuarios.LimpiarListaUsuarios;
 import pe.yt.com.piazzoli.kevin.michattimereal.ActividadDeUsuarios.Usuarios.UsuarioBuscadorAtributos;
 import pe.yt.com.piazzoli.kevin.michattimereal.Imagen.ActivitySubirImagen;
 import pe.yt.com.piazzoli.kevin.michattimereal.Internet.SolicitudesJson;
@@ -65,10 +68,46 @@ public class ActivityUsuarios extends AppCompatActivity {
             }
         });
         viewPager.setOffscreenPageLimit(3);
-        
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        actualizarSolicitudes();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_activity_amigos,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        if(id==R.id.NoCerrarSesionMenu){
+            Preferences.savePreferenceBoolean(ActivityUsuarios.this,false,Preferences.PREFERENCE_ESTADO_BUTTON_SESION);
+            Intent i = new Intent(ActivityUsuarios.this,Login.class);
+            startActivity(i);
+            finish();
+        }else if(id==R.id.subirFotoPerfil){
+            Intent i = new Intent(ActivityUsuarios.this, ActivitySubirImagen.class);
+            i.putExtra("imagen",URL_USER_FOTO_PERFIL);
+            startActivity(i);
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void actualizarSolicitudes(){
         SolicitudesJson sj = new SolicitudesJson() {
             @Override
             public void solicitudCompletada(JSONObject j) {
+                bus.post(new LimpiarListaAmigos());
+                bus.post(new LimpiarListaSolicitudes());
+                bus.post(new LimpiarListaUsuarios());
                 try {
                     JSONArray jA = j.getJSONArray("resultado");
                     for(int i=0;i<jA.length();i++){
@@ -135,31 +174,6 @@ public class ActivityUsuarios extends AppCompatActivity {
 
         String usuario = Preferences.obtenerPreferenceString(this,Preferences.PREFERENCE_USUARIO_LOGIN);
         sj.solicitudJsonGET(this,SolicitudesJson.URL_GET_ALL_DATOS+usuario);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_activity_amigos,menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
-
-        if(id==R.id.NoCerrarSesionMenu){
-            Preferences.savePreferenceBoolean(ActivityUsuarios.this,false,Preferences.PREFERENCE_ESTADO_BUTTON_SESION);
-            Intent i = new Intent(ActivityUsuarios.this,Login.class);
-            startActivity(i);
-            finish();
-        }else if(id==R.id.subirFotoPerfil){
-            Intent i = new Intent(ActivityUsuarios.this, ActivitySubirImagen.class);
-            i.putExtra("imagen",URL_USER_FOTO_PERFIL);
-            startActivity(i);
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
 }
